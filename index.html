@@ -1,464 +1,949 @@
 <!DOCTYPE html>
 
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amen Clinic ADD Type Questionnaire</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-        h1 {
-            color: #333;
-            text-align: center;
-        }
-        form {
-            background-color: white;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        .question {
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-        }
-        .question p {
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #333;
-        }
-        .options {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        .options label {
-            cursor: pointer;
-        }
-        .options input[type="radio"] {
-            margin-right: 5px;
-            cursor: pointer;
-        }
-        button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 12px 30px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            display: block;
-            margin: 20px auto 0;
-        }
-        button:hover {
-            background-color: #45a049;
-        }
-    </style>
-</head>
-<body>
-    <h1>Amen Clinic ADD Type Questionnaire</h1>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Amen Clinic ADD Type Questionnaire</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #f5f5f5;
+            }
+            h1 {
+                color: #333;
+                text-align: center;
+            }
+            form {
+                background-color: white;
+                padding: 30px;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            .question {
+                margin-bottom: 25px;
+                padding-bottom: 15px;
+                border-bottom: 1px solid #eee;
+            }
+            .question p {
+                font-weight: bold;
+                margin-bottom: 10px;
+                color: #333;
+            }
+            .options {
+                display: flex;
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+            .options label {
+                cursor: pointer;
+            }
+            .options input[type="radio"] {
+                margin-right: 5px;
+                cursor: pointer;
+            }
+            button {
+                background-color: #4CAF50;
+                color: white;
+                padding: 12px 30px;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+                font-size: 16px;
+                display: block;
+                margin: 20px auto 0;
+            }
+            button:hover {
+                background-color: #45a049;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Amen Clinic ADD Type Questionnaire</h1>
+        <h2><i>Thanks for taking the time to complete this questionnaire. Please answer all questions as honestly as possible.</i></h2>
 
-```
-<form action="http://localhost:3000/submit" method="POST">
-    
-    <div class="question">
-        <p>1. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q1-na" name="question1" value="NA"> NA</label>
-            <label><input type="radio" id="q1-0" name="question1" value="0"> 0</label>
-            <label><input type="radio" id="q1-1" name="question1" value="1"> 1</label>
-            <label><input type="radio" id="q1-2" name="question1" value="2"> 2</label>
-            <label><input type="radio" id="q1-3" name="question1" value="3"> 3</label>
-            <label><input type="radio" id="q1-4" name="question1" value="4"> 4</label>
+    <form action="http://localhost:3000/submit" method="POST">
+        
+        <div class="question">
+            <p>1. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q1-na" name="question1" value="NA"> NA</label>
+                <label><input type="radio" id="q1-0" name="question1" value="0"> 0</label>
+                <label><input type="radio" id="q1-1" name="question1" value="1"> 1</label>
+                <label><input type="radio" id="q1-2" name="question1" value="2"> 2</label>
+                <label><input type="radio" id="q1-3" name="question1" value="3"> 3</label>
+                <label><input type="radio" id="q1-4" name="question1" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>2. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q2-na" name="question2" value="NA"> NA</label>
-            <label><input type="radio" id="q2-0" name="question2" value="0"> 0</label>
-            <label><input type="radio" id="q2-1" name="question2" value="1"> 1</label>
-            <label><input type="radio" id="q2-2" name="question2" value="2"> 2</label>
-            <label><input type="radio" id="q2-3" name="question2" value="3"> 3</label>
-            <label><input type="radio" id="q2-4" name="question2" value="4"> 4</label>
+        <div class="question">
+            <p>2. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q2-na" name="question2" value="NA"> NA</label>
+                <label><input type="radio" id="q2-0" name="question2" value="0"> 0</label>
+                <label><input type="radio" id="q2-1" name="question2" value="1"> 1</label>
+                <label><input type="radio" id="q2-2" name="question2" value="2"> 2</label>
+                <label><input type="radio" id="q2-3" name="question2" value="3"> 3</label>
+                <label><input type="radio" id="q2-4" name="question2" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>3. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q3-na" name="question3" value="NA"> NA</label>
-            <label><input type="radio" id="q3-0" name="question3" value="0"> 0</label>
-            <label><input type="radio" id="q3-1" name="question3" value="1"> 1</label>
-            <label><input type="radio" id="q3-2" name="question3" value="2"> 2</label>
-            <label><input type="radio" id="q3-3" name="question3" value="3"> 3</label>
-            <label><input type="radio" id="q3-4" name="question3" value="4"> 4</label>
+        <div class="question">
+            <p>3. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q3-na" name="question3" value="NA"> NA</label>
+                <label><input type="radio" id="q3-0" name="question3" value="0"> 0</label>
+                <label><input type="radio" id="q3-1" name="question3" value="1"> 1</label>
+                <label><input type="radio" id="q3-2" name="question3" value="2"> 2</label>
+                <label><input type="radio" id="q3-3" name="question3" value="3"> 3</label>
+                <label><input type="radio" id="q3-4" name="question3" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>4. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q4-na" name="question4" value="NA"> NA</label>
-            <label><input type="radio" id="q4-0" name="question4" value="0"> 0</label>
-            <label><input type="radio" id="q4-1" name="question4" value="1"> 1</label>
-            <label><input type="radio" id="q4-2" name="question4" value="2"> 2</label>
-            <label><input type="radio" id="q4-3" name="question4" value="3"> 3</label>
-            <label><input type="radio" id="q4-4" name="question4" value="4"> 4</label>
+        <div class="question">
+            <p>4. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q4-na" name="question4" value="NA"> NA</label>
+                <label><input type="radio" id="q4-0" name="question4" value="0"> 0</label>
+                <label><input type="radio" id="q4-1" name="question4" value="1"> 1</label>
+                <label><input type="radio" id="q4-2" name="question4" value="2"> 2</label>
+                <label><input type="radio" id="q4-3" name="question4" value="3"> 3</label>
+                <label><input type="radio" id="q4-4" name="question4" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>5. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q5-na" name="question5" value="NA"> NA</label>
-            <label><input type="radio" id="q5-0" name="question5" value="0"> 0</label>
-            <label><input type="radio" id="q5-1" name="question5" value="1"> 1</label>
-            <label><input type="radio" id="q5-2" name="question5" value="2"> 2</label>
-            <label><input type="radio" id="q5-3" name="question5" value="3"> 3</label>
-            <label><input type="radio" id="q5-4" name="question5" value="4"> 4</label>
+        <div class="question">
+            <p>5. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q5-na" name="question5" value="NA"> NA</label>
+                <label><input type="radio" id="q5-0" name="question5" value="0"> 0</label>
+                <label><input type="radio" id="q5-1" name="question5" value="1"> 1</label>
+                <label><input type="radio" id="q5-2" name="question5" value="2"> 2</label>
+                <label><input type="radio" id="q5-3" name="question5" value="3"> 3</label>
+                <label><input type="radio" id="q5-4" name="question5" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>6. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q6-na" name="question6" value="NA"> NA</label>
-            <label><input type="radio" id="q6-0" name="question6" value="0"> 0</label>
-            <label><input type="radio" id="q6-1" name="question6" value="1"> 1</label>
-            <label><input type="radio" id="q6-2" name="question6" value="2"> 2</label>
-            <label><input type="radio" id="q6-3" name="question6" value="3"> 3</label>
-            <label><input type="radio" id="q6-4" name="question6" value="4"> 4</label>
+        <div class="question">
+            <p>6. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q6-na" name="question6" value="NA"> NA</label>
+                <label><input type="radio" id="q6-0" name="question6" value="0"> 0</label>
+                <label><input type="radio" id="q6-1" name="question6" value="1"> 1</label>
+                <label><input type="radio" id="q6-2" name="question6" value="2"> 2</label>
+                <label><input type="radio" id="q6-3" name="question6" value="3"> 3</label>
+                <label><input type="radio" id="q6-4" name="question6" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>7. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q7-na" name="question7" value="NA"> NA</label>
-            <label><input type="radio" id="q7-0" name="question7" value="0"> 0</label>
-            <label><input type="radio" id="q7-1" name="question7" value="1"> 1</label>
-            <label><input type="radio" id="q7-2" name="question7" value="2"> 2</label>
-            <label><input type="radio" id="q7-3" name="question7" value="3"> 3</label>
-            <label><input type="radio" id="q7-4" name="question7" value="4"> 4</label>
+        <div class="question">
+            <p>7. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q7-na" name="question7" value="NA"> NA</label>
+                <label><input type="radio" id="q7-0" name="question7" value="0"> 0</label>
+                <label><input type="radio" id="q7-1" name="question7" value="1"> 1</label>
+                <label><input type="radio" id="q7-2" name="question7" value="2"> 2</label>
+                <label><input type="radio" id="q7-3" name="question7" value="3"> 3</label>
+                <label><input type="radio" id="q7-4" name="question7" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>8. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q8-na" name="question8" value="NA"> NA</label>
-            <label><input type="radio" id="q8-0" name="question8" value="0"> 0</label>
-            <label><input type="radio" id="q8-1" name="question8" value="1"> 1</label>
-            <label><input type="radio" id="q8-2" name="question8" value="2"> 2</label>
-            <label><input type="radio" id="q8-3" name="question8" value="3"> 3</label>
-            <label><input type="radio" id="q8-4" name="question8" value="4"> 4</label>
+        <div class="question">
+            <p>8. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q8-na" name="question8" value="NA"> NA</label>
+                <label><input type="radio" id="q8-0" name="question8" value="0"> 0</label>
+                <label><input type="radio" id="q8-1" name="question8" value="1"> 1</label>
+                <label><input type="radio" id="q8-2" name="question8" value="2"> 2</label>
+                <label><input type="radio" id="q8-3" name="question8" value="3"> 3</label>
+                <label><input type="radio" id="q8-4" name="question8" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>9. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q9-na" name="question9" value="NA"> NA</label>
-            <label><input type="radio" id="q9-0" name="question9" value="0"> 0</label>
-            <label><input type="radio" id="q9-1" name="question9" value="1"> 1</label>
-            <label><input type="radio" id="q9-2" name="question9" value="2"> 2</label>
-            <label><input type="radio" id="q9-3" name="question9" value="3"> 3</label>
-            <label><input type="radio" id="q9-4" name="question9" value="4"> 4</label>
+        <div class="question">
+            <p>9. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q9-na" name="question9" value="NA"> NA</label>
+                <label><input type="radio" id="q9-0" name="question9" value="0"> 0</label>
+                <label><input type="radio" id="q9-1" name="question9" value="1"> 1</label>
+                <label><input type="radio" id="q9-2" name="question9" value="2"> 2</label>
+                <label><input type="radio" id="q9-3" name="question9" value="3"> 3</label>
+                <label><input type="radio" id="q9-4" name="question9" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>10. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q10-na" name="question10" value="NA"> NA</label>
-            <label><input type="radio" id="q10-0" name="question10" value="0"> 0</label>
-            <label><input type="radio" id="q10-1" name="question10" value="1"> 1</label>
-            <label><input type="radio" id="q10-2" name="question10" value="2"> 2</label>
-            <label><input type="radio" id="q10-3" name="question10" value="3"> 3</label>
-            <label><input type="radio" id="q10-4" name="question10" value="4"> 4</label>
+        <div class="question">
+            <p>10. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q10-na" name="question10" value="NA"> NA</label>
+                <label><input type="radio" id="q10-0" name="question10" value="0"> 0</label>
+                <label><input type="radio" id="q10-1" name="question10" value="1"> 1</label>
+                <label><input type="radio" id="q10-2" name="question10" value="2"> 2</label>
+                <label><input type="radio" id="q10-3" name="question10" value="3"> 3</label>
+                <label><input type="radio" id="q10-4" name="question10" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>11. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q11-na" name="question11" value="NA"> NA</label>
-            <label><input type="radio" id="q11-0" name="question11" value="0"> 0</label>
-            <label><input type="radio" id="q11-1" name="question11" value="1"> 1</label>
-            <label><input type="radio" id="q11-2" name="question11" value="2"> 2</label>
-            <label><input type="radio" id="q11-3" name="question11" value="3"> 3</label>
-            <label><input type="radio" id="q11-4" name="question11" value="4"> 4</label>
+        <div class="question">
+            <p>11. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q11-na" name="question11" value="NA"> NA</label>
+                <label><input type="radio" id="q11-0" name="question11" value="0"> 0</label>
+                <label><input type="radio" id="q11-1" name="question11" value="1"> 1</label>
+                <label><input type="radio" id="q11-2" name="question11" value="2"> 2</label>
+                <label><input type="radio" id="q11-3" name="question11" value="3"> 3</label>
+                <label><input type="radio" id="q11-4" name="question11" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>12. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q12-na" name="question12" value="NA"> NA</label>
-            <label><input type="radio" id="q12-0" name="question12" value="0"> 0</label>
-            <label><input type="radio" id="q12-1" name="question12" value="1"> 1</label>
-            <label><input type="radio" id="q12-2" name="question12" value="2"> 2</label>
-            <label><input type="radio" id="q12-3" name="question12" value="3"> 3</label>
-            <label><input type="radio" id="q12-4" name="question12" value="4"> 4</label>
+        <div class="question">
+            <p>12. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q12-na" name="question12" value="NA"> NA</label>
+                <label><input type="radio" id="q12-0" name="question12" value="0"> 0</label>
+                <label><input type="radio" id="q12-1" name="question12" value="1"> 1</label>
+                <label><input type="radio" id="q12-2" name="question12" value="2"> 2</label>
+                <label><input type="radio" id="q12-3" name="question12" value="3"> 3</label>
+                <label><input type="radio" id="q12-4" name="question12" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>13. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q13-na" name="question13" value="NA"> NA</label>
-            <label><input type="radio" id="q13-0" name="question13" value="0"> 0</label>
-            <label><input type="radio" id="q13-1" name="question13" value="1"> 1</label>
-            <label><input type="radio" id="q13-2" name="question13" value="2"> 2</label>
-            <label><input type="radio" id="q13-3" name="question13" value="3"> 3</label>
-            <label><input type="radio" id="q13-4" name="question13" value="4"> 4</label>
+        <div class="question">
+            <p>13. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q13-na" name="question13" value="NA"> NA</label>
+                <label><input type="radio" id="q13-0" name="question13" value="0"> 0</label>
+                <label><input type="radio" id="q13-1" name="question13" value="1"> 1</label>
+                <label><input type="radio" id="q13-2" name="question13" value="2"> 2</label>
+                <label><input type="radio" id="q13-3" name="question13" value="3"> 3</label>
+                <label><input type="radio" id="q13-4" name="question13" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>14. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q14-na" name="question14" value="NA"> NA</label>
-            <label><input type="radio" id="q14-0" name="question14" value="0"> 0</label>
-            <label><input type="radio" id="q14-1" name="question14" value="1"> 1</label>
-            <label><input type="radio" id="q14-2" name="question14" value="2"> 2</label>
-            <label><input type="radio" id="q14-3" name="question14" value="3"> 3</label>
-            <label><input type="radio" id="q14-4" name="question14" value="4"> 4</label>
+        <div class="question">
+            <p>14. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q14-na" name="question14" value="NA"> NA</label>
+                <label><input type="radio" id="q14-0" name="question14" value="0"> 0</label>
+                <label><input type="radio" id="q14-1" name="question14" value="1"> 1</label>
+                <label><input type="radio" id="q14-2" name="question14" value="2"> 2</label>
+                <label><input type="radio" id="q14-3" name="question14" value="3"> 3</label>
+                <label><input type="radio" id="q14-4" name="question14" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>15. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q15-na" name="question15" value="NA"> NA</label>
-            <label><input type="radio" id="q15-0" name="question15" value="0"> 0</label>
-            <label><input type="radio" id="q15-1" name="question15" value="1"> 1</label>
-            <label><input type="radio" id="q15-2" name="question15" value="2"> 2</label>
-            <label><input type="radio" id="q15-3" name="question15" value="3"> 3</label>
-            <label><input type="radio" id="q15-4" name="question15" value="4"> 4</label>
+        <div class="question">
+            <p>15. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q15-na" name="question15" value="NA"> NA</label>
+                <label><input type="radio" id="q15-0" name="question15" value="0"> 0</label>
+                <label><input type="radio" id="q15-1" name="question15" value="1"> 1</label>
+                <label><input type="radio" id="q15-2" name="question15" value="2"> 2</label>
+                <label><input type="radio" id="q15-3" name="question15" value="3"> 3</label>
+                <label><input type="radio" id="q15-4" name="question15" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>16. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q16-na" name="question16" value="NA"> NA</label>
-            <label><input type="radio" id="q16-0" name="question16" value="0"> 0</label>
-            <label><input type="radio" id="q16-1" name="question16" value="1"> 1</label>
-            <label><input type="radio" id="q16-2" name="question16" value="2"> 2</label>
-            <label><input type="radio" id="q16-3" name="question16" value="3"> 3</label>
-            <label><input type="radio" id="q16-4" name="question16" value="4"> 4</label>
+        <div class="question">
+            <p>16. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q16-na" name="question16" value="NA"> NA</label>
+                <label><input type="radio" id="q16-0" name="question16" value="0"> 0</label>
+                <label><input type="radio" id="q16-1" name="question16" value="1"> 1</label>
+                <label><input type="radio" id="q16-2" name="question16" value="2"> 2</label>
+                <label><input type="radio" id="q16-3" name="question16" value="3"> 3</label>
+                <label><input type="radio" id="q16-4" name="question16" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>17. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q17-na" name="question17" value="NA"> NA</label>
-            <label><input type="radio" id="q17-0" name="question17" value="0"> 0</label>
-            <label><input type="radio" id="q17-1" name="question17" value="1"> 1</label>
-            <label><input type="radio" id="q17-2" name="question17" value="2"> 2</label>
-            <label><input type="radio" id="q17-3" name="question17" value="3"> 3</label>
-            <label><input type="radio" id="q17-4" name="question17" value="4"> 4</label>
+        <div class="question">
+            <p>17. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q17-na" name="question17" value="NA"> NA</label>
+                <label><input type="radio" id="q17-0" name="question17" value="0"> 0</label>
+                <label><input type="radio" id="q17-1" name="question17" value="1"> 1</label>
+                <label><input type="radio" id="q17-2" name="question17" value="2"> 2</label>
+                <label><input type="radio" id="q17-3" name="question17" value="3"> 3</label>
+                <label><input type="radio" id="q17-4" name="question17" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>18. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q18-na" name="question18" value="NA"> NA</label>
-            <label><input type="radio" id="q18-0" name="question18" value="0"> 0</label>
-            <label><input type="radio" id="q18-1" name="question18" value="1"> 1</label>
-            <label><input type="radio" id="q18-2" name="question18" value="2"> 2</label>
-            <label><input type="radio" id="q18-3" name="question18" value="3"> 3</label>
-            <label><input type="radio" id="q18-4" name="question18" value="4"> 4</label>
+        <div class="question">
+            <p>18. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q18-na" name="question18" value="NA"> NA</label>
+                <label><input type="radio" id="q18-0" name="question18" value="0"> 0</label>
+                <label><input type="radio" id="q18-1" name="question18" value="1"> 1</label>
+                <label><input type="radio" id="q18-2" name="question18" value="2"> 2</label>
+                <label><input type="radio" id="q18-3" name="question18" value="3"> 3</label>
+                <label><input type="radio" id="q18-4" name="question18" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>19. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q19-na" name="question19" value="NA"> NA</label>
-            <label><input type="radio" id="q19-0" name="question19" value="0"> 0</label>
-            <label><input type="radio" id="q19-1" name="question19" value="1"> 1</label>
-            <label><input type="radio" id="q19-2" name="question19" value="2"> 2</label>
-            <label><input type="radio" id="q19-3" name="question19" value="3"> 3</label>
-            <label><input type="radio" id="q19-4" name="question19" value="4"> 4</label>
+        <div class="question">
+            <p>19. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q19-na" name="question19" value="NA"> NA</label>
+                <label><input type="radio" id="q19-0" name="question19" value="0"> 0</label>
+                <label><input type="radio" id="q19-1" name="question19" value="1"> 1</label>
+                <label><input type="radio" id="q19-2" name="question19" value="2"> 2</label>
+                <label><input type="radio" id="q19-3" name="question19" value="3"> 3</label>
+                <label><input type="radio" id="q19-4" name="question19" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>20. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q20-na" name="question20" value="NA"> NA</label>
-            <label><input type="radio" id="q20-0" name="question20" value="0"> 0</label>
-            <label><input type="radio" id="q20-1" name="question20" value="1"> 1</label>
-            <label><input type="radio" id="q20-2" name="question20" value="2"> 2</label>
-            <label><input type="radio" id="q20-3" name="question20" value="3"> 3</label>
-            <label><input type="radio" id="q20-4" name="question20" value="4"> 4</label>
+        <div class="question">
+            <p>20. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q20-na" name="question20" value="NA"> NA</label>
+                <label><input type="radio" id="q20-0" name="question20" value="0"> 0</label>
+                <label><input type="radio" id="q20-1" name="question20" value="1"> 1</label>
+                <label><input type="radio" id="q20-2" name="question20" value="2"> 2</label>
+                <label><input type="radio" id="q20-3" name="question20" value="3"> 3</label>
+                <label><input type="radio" id="q20-4" name="question20" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>21. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q21-na" name="question21" value="NA"> NA</label>
-            <label><input type="radio" id="q21-0" name="question21" value="0"> 0</label>
-            <label><input type="radio" id="q21-1" name="question21" value="1"> 1</label>
-            <label><input type="radio" id="q21-2" name="question21" value="2"> 2</label>
-            <label><input type="radio" id="q21-3" name="question21" value="3"> 3</label>
-            <label><input type="radio" id="q21-4" name="question21" value="4"> 4</label>
+        <div class="question">
+            <p>21. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q21-na" name="question21" value="NA"> NA</label>
+                <label><input type="radio" id="q21-0" name="question21" value="0"> 0</label>
+                <label><input type="radio" id="q21-1" name="question21" value="1"> 1</label>
+                <label><input type="radio" id="q21-2" name="question21" value="2"> 2</label>
+                <label><input type="radio" id="q21-3" name="question21" value="3"> 3</label>
+                <label><input type="radio" id="q21-4" name="question21" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>22. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q22-na" name="question22" value="NA"> NA</label>
-            <label><input type="radio" id="q22-0" name="question22" value="0"> 0</label>
-            <label><input type="radio" id="q22-1" name="question22" value="1"> 1</label>
-            <label><input type="radio" id="q22-2" name="question22" value="2"> 2</label>
-            <label><input type="radio" id="q22-3" name="question22" value="3"> 3</label>
-            <label><input type="radio" id="q22-4" name="question22" value="4"> 4</label>
+        <div class="question">
+            <p>22. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q22-na" name="question22" value="NA"> NA</label>
+                <label><input type="radio" id="q22-0" name="question22" value="0"> 0</label>
+                <label><input type="radio" id="q22-1" name="question22" value="1"> 1</label>
+                <label><input type="radio" id="q22-2" name="question22" value="2"> 2</label>
+                <label><input type="radio" id="q22-3" name="question22" value="3"> 3</label>
+                <label><input type="radio" id="q22-4" name="question22" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>23. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q23-na" name="question23" value="NA"> NA</label>
-            <label><input type="radio" id="q23-0" name="question23" value="0"> 0</label>
-            <label><input type="radio" id="q23-1" name="question23" value="1"> 1</label>
-            <label><input type="radio" id="q23-2" name="question23" value="2"> 2</label>
-            <label><input type="radio" id="q23-3" name="question23" value="3"> 3</label>
-            <label><input type="radio" id="q23-4" name="question23" value="4"> 4</label>
+        <div class="question">
+            <p>23. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q23-na" name="question23" value="NA"> NA</label>
+                <label><input type="radio" id="q23-0" name="question23" value="0"> 0</label>
+                <label><input type="radio" id="q23-1" name="question23" value="1"> 1</label>
+                <label><input type="radio" id="q23-2" name="question23" value="2"> 2</label>
+                <label><input type="radio" id="q23-3" name="question23" value="3"> 3</label>
+                <label><input type="radio" id="q23-4" name="question23" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>24. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q24-na" name="question24" value="NA"> NA</label>
-            <label><input type="radio" id="q24-0" name="question24" value="0"> 0</label>
-            <label><input type="radio" id="q24-1" name="question24" value="1"> 1</label>
-            <label><input type="radio" id="q24-2" name="question24" value="2"> 2</label>
-            <label><input type="radio" id="q24-3" name="question24" value="3"> 3</label>
-            <label><input type="radio" id="q24-4" name="question24" value="4"> 4</label>
+        <div class="question">
+            <p>24. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q24-na" name="question24" value="NA"> NA</label>
+                <label><input type="radio" id="q24-0" name="question24" value="0"> 0</label>
+                <label><input type="radio" id="q24-1" name="question24" value="1"> 1</label>
+                <label><input type="radio" id="q24-2" name="question24" value="2"> 2</label>
+                <label><input type="radio" id="q24-3" name="question24" value="3"> 3</label>
+                <label><input type="radio" id="q24-4" name="question24" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>25. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q25-na" name="question25" value="NA"> NA</label>
-            <label><input type="radio" id="q25-0" name="question25" value="0"> 0</label>
-            <label><input type="radio" id="q25-1" name="question25" value="1"> 1</label>
-            <label><input type="radio" id="q25-2" name="question25" value="2"> 2</label>
-            <label><input type="radio" id="q25-3" name="question25" value="3"> 3</label>
-            <label><input type="radio" id="q25-4" name="question25" value="4"> 4</label>
+        <div class="question">
+            <p>25. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q25-na" name="question25" value="NA"> NA</label>
+                <label><input type="radio" id="q25-0" name="question25" value="0"> 0</label>
+                <label><input type="radio" id="q25-1" name="question25" value="1"> 1</label>
+                <label><input type="radio" id="q25-2" name="question25" value="2"> 2</label>
+                <label><input type="radio" id="q25-3" name="question25" value="3"> 3</label>
+                <label><input type="radio" id="q25-4" name="question25" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>26. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q26-na" name="question26" value="NA"> NA</label>
-            <label><input type="radio" id="q26-0" name="question26" value="0"> 0</label>
-            <label><input type="radio" id="q26-1" name="question26" value="1"> 1</label>
-            <label><input type="radio" id="q26-2" name="question26" value="2"> 2</label>
-            <label><input type="radio" id="q26-3" name="question26" value="3"> 3</label>
-            <label><input type="radio" id="q26-4" name="question26" value="4"> 4</label>
+        <div class="question">
+            <p>26. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q26-na" name="question26" value="NA"> NA</label>
+                <label><input type="radio" id="q26-0" name="question26" value="0"> 0</label>
+                <label><input type="radio" id="q26-1" name="question26" value="1"> 1</label>
+                <label><input type="radio" id="q26-2" name="question26" value="2"> 2</label>
+                <label><input type="radio" id="q26-3" name="question26" value="3"> 3</label>
+                <label><input type="radio" id="q26-4" name="question26" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>27. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q27-na" name="question27" value="NA"> NA</label>
-            <label><input type="radio" id="q27-0" name="question27" value="0"> 0</label>
-            <label><input type="radio" id="q27-1" name="question27" value="1"> 1</label>
-            <label><input type="radio" id="q27-2" name="question27" value="2"> 2</label>
-            <label><input type="radio" id="q27-3" name="question27" value="3"> 3</label>
-            <label><input type="radio" id="q27-4" name="question27" value="4"> 4</label>
+        <div class="question">
+            <p>27. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q27-na" name="question27" value="NA"> NA</label>
+                <label><input type="radio" id="q27-0" name="question27" value="0"> 0</label>
+                <label><input type="radio" id="q27-1" name="question27" value="1"> 1</label>
+                <label><input type="radio" id="q27-2" name="question27" value="2"> 2</label>
+                <label><input type="radio" id="q27-3" name="question27" value="3"> 3</label>
+                <label><input type="radio" id="q27-4" name="question27" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>28. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q28-na" name="question28" value="NA"> NA</label>
-            <label><input type="radio" id="q28-0" name="question28" value="0"> 0</label>
-            <label><input type="radio" id="q28-1" name="question28" value="1"> 1</label>
-            <label><input type="radio" id="q28-2" name="question28" value="2"> 2</label>
-            <label><input type="radio" id="q28-3" name="question28" value="3"> 3</label>
-            <label><input type="radio" id="q28-4" name="question28" value="4"> 4</label>
+        <div class="question">
+            <p>28. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q28-na" name="question28" value="NA"> NA</label>
+                <label><input type="radio" id="q28-0" name="question28" value="0"> 0</label>
+                <label><input type="radio" id="q28-1" name="question28" value="1"> 1</label>
+                <label><input type="radio" id="q28-2" name="question28" value="2"> 2</label>
+                <label><input type="radio" id="q28-3" name="question28" value="3"> 3</label>
+                <label><input type="radio" id="q28-4" name="question28" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>29. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q29-na" name="question29" value="NA"> NA</label>
-            <label><input type="radio" id="q29-0" name="question29" value="0"> 0</label>
-            <label><input type="radio" id="q29-1" name="question29" value="1"> 1</label>
-            <label><input type="radio" id="q29-2" name="question29" value="2"> 2</label>
-            <label><input type="radio" id="q29-3" name="question29" value="3"> 3</label>
-            <label><input type="radio" id="q29-4" name="question29" value="4"> 4</label>
+        <div class="question">
+            <p>29. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q29-na" name="question29" value="NA"> NA</label>
+                <label><input type="radio" id="q29-0" name="question29" value="0"> 0</label>
+                <label><input type="radio" id="q29-1" name="question29" value="1"> 1</label>
+                <label><input type="radio" id="q29-2" name="question29" value="2"> 2</label>
+                <label><input type="radio" id="q29-3" name="question29" value="3"> 3</label>
+                <label><input type="radio" id="q29-4" name="question29" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>30. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q30-na" name="question30" value="NA"> NA</label>
-            <label><input type="radio" id="q30-0" name="question30" value="0"> 0</label>
-            <label><input type="radio" id="q30-1" name="question30" value="1"> 1</label>
-            <label><input type="radio" id="q30-2" name="question30" value="2"> 2</label>
-            <label><input type="radio" id="q30-3" name="question30" value="3"> 3</label>
-            <label><input type="radio" id="q30-4" name="question30" value="4"> 4</label>
+        <div class="question">
+            <p>30. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q30-na" name="question30" value="NA"> NA</label>
+                <label><input type="radio" id="q30-0" name="question30" value="0"> 0</label>
+                <label><input type="radio" id="q30-1" name="question30" value="1"> 1</label>
+                <label><input type="radio" id="q30-2" name="question30" value="2"> 2</label>
+                <label><input type="radio" id="q30-3" name="question30" value="3"> 3</label>
+                <label><input type="radio" id="q30-4" name="question30" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>31. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q31-na" name="question31" value="NA"> NA</label>
-            <label><input type="radio" id="q31-0" name="question31" value="0"> 0</label>
-            <label><input type="radio" id="q31-1" name="question31" value="1"> 1</label>
-            <label><input type="radio" id="q31-2" name="question31" value="2"> 2</label>
-            <label><input type="radio" id="q31-3" name="question31" value="3"> 3</label>
-            <label><input type="radio" id="q31-4" name="question31" value="4"> 4</label>
+        <div class="question">
+            <p>31. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q31-na" name="question31" value="NA"> NA</label>
+                <label><input type="radio" id="q31-0" name="question31" value="0"> 0</label>
+                <label><input type="radio" id="q31-1" name="question31" value="1"> 1</label>
+                <label><input type="radio" id="q31-2" name="question31" value="2"> 2</label>
+                <label><input type="radio" id="q31-3" name="question31" value="3"> 3</label>
+                <label><input type="radio" id="q31-4" name="question31" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>32. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q32-na" name="question32" value="NA"> NA</label>
-            <label><input type="radio" id="q32-0" name="question32" value="0"> 0</label>
-            <label><input type="radio" id="q32-1" name="question32" value="1"> 1</label>
-            <label><input type="radio" id="q32-2" name="question32" value="2"> 2</label>
-            <label><input type="radio" id="q32-3" name="question32" value="3"> 3</label>
-            <label><input type="radio" id="q32-4" name="question32" value="4"> 4</label>
+        <div class="question">
+            <p>32. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q32-na" name="question32" value="NA"> NA</label>
+                <label><input type="radio" id="q32-0" name="question32" value="0"> 0</label>
+                <label><input type="radio" id="q32-1" name="question32" value="1"> 1</label>
+                <label><input type="radio" id="q32-2" name="question32" value="2"> 2</label>
+                <label><input type="radio" id="q32-3" name="question32" value="3"> 3</label>
+                <label><input type="radio" id="q32-4" name="question32" value="4"> 4</label>
+            </div>
         </div>
-    </div>
 
-    <div class="question">
-        <p>33. Question text goes here</p>
-        <div class="options">
-            <label><input type="radio" id="q33-na" name="question33" value="NA"> NA</label>
-            <label><input type="radio" id="q33-0" name="question33" value="0"> 0</label>
-            <label><input type="radio" id="q33-1" name="question33" value="1"> 1</label>
-            <label><input type="radio" id="q33-2" name="question33" value="2"> 2</label>
-            <label><input type="radio" id="q33-3" name="question33" value="3"> 3</label>
-            <label><input type="radio" id="q33-4" name="question33" value="4"> 4</label>
+        <div class="question">
+            <p>33. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q33-na" name="question33" value="NA"> NA</label>
+                <label><input type="radio" id="q33-0" name="question33" value="0"> 0</label>
+                <label><input type="radio" id="q33-1" name="question33" value="1"> 1</label>
+                <label><input type="radio" id="q33-2" name="question33" value="2"> 2</label>
+                <label><input type="radio" id="q33-3" name="question33" value="3"> 3</label>
+                <label><input type="radio" id="q33-4" name="question33" value="4"> 4</label>
+            </div>
         </div>
-    </div>
+
+        <div class="question">
+            <p>34. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q33-na" name="question34" value="NA"> NA</label>
+                <label><input type="radio" id="q33-0" name="question34" value="0"> 0</label>
+                <label><input type="radio" id="q33-1" name="question34" value="1"> 1</label>
+                <label><input type="radio" id="q33-2" name="question34" value="2"> 2</label>
+                <label><input type="radio" id="q33-3" name="question34" value="3"> 3</label>
+                <label><input type="radio" id="q33-4" name="question34" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>34. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q34-na" name="question34" value="NA"> NA</label>
+                <label><input type="radio" id="q34-0" name="question34" value="0"> 0</label>
+                <label><input type="radio" id="q34-1" name="question34" value="1"> 1</label>
+                <label><input type="radio" id="q34-2" name="question34" value="2"> 2</label>
+                <label><input type="radio" id="q34-3" name="question34" value="3"> 3</label>
+                <label><input type="radio" id="q34-4" name="question34" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>35. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q35-na" name="question35" value="NA"> NA</label>
+                <label><input type="radio" id="q35-0" name="question35" value="0"> 0</label>
+                <label><input type="radio" id="q35-1" name="question35" value="1"> 1</label>
+                <label><input type="radio" id="q35-2" name="question35" value="2"> 2</label>
+                <label><input type="radio" id="q35-3" name="question35" value="3"> 3</label>
+                <label><input type="radio" id="q35-4" name="question35" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>36. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q36-na" name="question36" value="NA"> NA</label>
+                <label><input type="radio" id="q36-0" name="question36" value="0"> 0</label>
+                <label><input type="radio" id="q36-1" name="question36" value="1"> 1</label>
+                <label><input type="radio" id="q36-2" name="question36" value="2"> 2</label>
+                <label><input type="radio" id="q36-3" name="question36" value="3"> 3</label>
+                <label><input type="radio" id="q36-4" name="question36" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>37. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q37-na" name="question37" value="NA"> NA</label>
+                <label><input type="radio" id="q37-0" name="question37" value="0"> 0</label>
+                <label><input type="radio" id="q37-1" name="question37" value="1"> 1</label>
+                <label><input type="radio" id="q37-2" name="question37" value="2"> 2</label>
+                <label><input type="radio" id="q37-3" name="question37" value="3"> 3</label>
+                <label><input type="radio" id="q37-4" name="question37" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>38. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q38-na" name="question38" value="NA"> NA</label>
+                <label><input type="radio" id="q38-0" name="question38" value="0"> 0</label>
+                <label><input type="radio" id="q38-1" name="question38" value="1"> 1</label>
+                <label><input type="radio" id="q38-2" name="question38" value="2"> 2</label>
+                <label><input type="radio" id="q38-3" name="question38" value="3"> 3</label>
+                <label><input type="radio" id="q38-4" name="question38" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>39. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q39-na" name="question39" value="NA"> NA</label>
+                <label><input type="radio" id="q39-0" name="question39" value="0"> 0</label>
+                <label><input type="radio" id="q39-1" name="question39" value="1"> 1</label>
+                <label><input type="radio" id="q39-2" name="question39" value="2"> 2</label>
+                <label><input type="radio" id="q39-3" name="question39" value="3"> 3</label>
+                <label><input type="radio" id="q39-4" name="question39" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>40. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q40-na" name="question40" value="NA"> NA</label>
+                <label><input type="radio" id="q40-0" name="question40" value="0"> 0</label>
+                <label><input type="radio" id="q40-1" name="question40" value="1"> 1</label>
+                <label><input type="radio" id="q40-2" name="question40" value="2"> 2</label>
+                <label><input type="radio" id="q40-3" name="question40" value="3"> 3</label>
+                <label><input type="radio" id="q40-4" name="question40" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>41. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q41-na" name="question41" value="NA"> NA</label>
+                <label><input type="radio" id="q41-0" name="question41" value="0"> 0</label>
+                <label><input type="radio" id="q41-1" name="question41" value="1"> 1</label>
+                <label><input type="radio" id="q41-2" name="question41" value="2"> 2</label>
+                <label><input type="radio" id="q41-3" name="question41" value="3"> 3</label>
+                <label><input type="radio" id="q41-4" name="question41" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>42. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q42-na" name="question42" value="NA"> NA</label>
+                <label><input type="radio" id="q42-0" name="question42" value="0"> 0</label>
+                <label><input type="radio" id="q42-1" name="question42" value="1"> 1</label>
+                <label><input type="radio" id="q42-2" name="question42" value="2"> 2</label>
+                <label><input type="radio" id="q42-3" name="question42" value="3"> 3</label>
+                <label><input type="radio" id="q42-4" name="question42" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>43. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q43-na" name="question43" value="NA"> NA</label>
+                <label><input type="radio" id="q43-0" name="question43" value="0"> 0</label>
+                <label><input type="radio" id="q43-1" name="question43" value="1"> 1</label>
+                <label><input type="radio" id="q43-2" name="question43" value="2"> 2</label>
+                <label><input type="radio" id="q43-3" name="question43" value="3"> 3</label>
+                <label><input type="radio" id="q43-4" name="question43" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>44. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q44-na" name="question44" value="NA"> NA</label>
+                <label><input type="radio" id="q44-0" name="question44" value="0"> 0</label>
+                <label><input type="radio" id="q44-1" name="question44" value="1"> 1</label>
+                <label><input type="radio" id="q44-2" name="question44" value="2"> 2</label>
+                <label><input type="radio" id="q44-3" name="question44" value="3"> 3</label>
+                <label><input type="radio" id="q44-4" name="question44" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>45. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q45-na" name="question45" value="NA"> NA</label>
+                <label><input type="radio" id="q45-0" name="question45" value="0"> 0</label>
+                <label><input type="radio" id="q45-1" name="question45" value="1"> 1</label>
+                <label><input type="radio" id="q45-2" name="question45" value="2"> 2</label>
+                <label><input type="radio" id="q45-3" name="question45" value="3"> 3</label>
+                <label><input type="radio" id="q45-4" name="question45" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>46. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q46-na" name="question46" value="NA"> NA</label>
+                <label><input type="radio" id="q46-0" name="question46" value="0"> 0</label>
+                <label><input type="radio" id="q46-1" name="question46" value="1"> 1</label>
+                <label><input type="radio" id="q46-2" name="question46" value="2"> 2</label>
+                <label><input type="radio" id="q46-3" name="question46" value="3"> 3</label>
+                <label><input type="radio" id="q46-4" name="question46" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>47. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q47-na" name="question47" value="NA"> NA</label>
+                <label><input type="radio" id="q47-0" name="question47" value="0"> 0</label>
+                <label><input type="radio" id="q47-1" name="question47" value="1"> 1</label>
+                <label><input type="radio" id="q47-2" name="question47" value="2"> 2</label>
+                <label><input type="radio" id="q47-3" name="question47" value="3"> 3</label>
+                <label><input type="radio" id="q47-4" name="question47" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>48. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q48-na" name="question48" value="NA"> NA</label>
+                <label><input type="radio" id="q48-0" name="question48" value="0"> 0</label>
+                <label><input type="radio" id="q48-1" name="question48" value="1"> 1</label>
+                <label><input type="radio" id="q48-2" name="question48" value="2"> 2</label>
+                <label><input type="radio" id="q48-3" name="question48" value="3"> 3</label>
+                <label><input type="radio" id="q48-4" name="question48" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>49. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q49-na" name="question49" value="NA"> NA</label>
+                <label><input type="radio" id="q49-0" name="question49" value="0"> 0</label>
+                <label><input type="radio" id="q49-1" name="question49" value="1"> 1</label>
+                <label><input type="radio" id="q49-2" name="question49" value="2"> 2</label>
+                <label><input type="radio" id="q49-3" name="question49" value="3"> 3</label>
+                <label><input type="radio" id="q49-4" name="question49" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>50. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q50-na" name="question50" value="NA"> NA</label>
+                <label><input type="radio" id="q50-0" name="question50" value="0"> 0</label>
+                <label><input type="radio" id="q50-1" name="question50" value="1"> 1</label>
+                <label><input type="radio" id="q50-2" name="question50" value="2"> 2</label>
+                <label><input type="radio" id="q50-3" name="question50" value="3"> 3</label>
+                <label><input type="radio" id="q50-4" name="question50" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>51. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q51-na" name="question51" value="NA"> NA</label>
+                <label><input type="radio" id="q51-0" name="question51" value="0"> 0</label>
+                <label><input type="radio" id="q51-1" name="question51" value="1"> 1</label>
+                <label><input type="radio" id="q51-2" name="question51" value="2"> 2</label>
+                <label><input type="radio" id="q51-3" name="question51" value="3"> 3</label>
+                <label><input type="radio" id="q51-4" name="question51" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>52. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q52-na" name="question52" value="NA"> NA</label>
+                <label><input type="radio" id="q52-0" name="question52" value="0"> 0</label>
+                <label><input type="radio" id="q52-1" name="question52" value="1"> 1</label>
+                <label><input type="radio" id="q52-2" name="question52" value="2"> 2</label>
+                <label><input type="radio" id="q52-3" name="question52" value="3"> 3</label>
+                <label><input type="radio" id="q52-4" name="question52" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>53. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q53-na" name="question53" value="NA"> NA</label>
+                <label><input type="radio" id="q53-0" name="question53" value="0"> 0</label>
+                <label><input type="radio" id="q53-1" name="question53" value="1"> 1</label>
+                <label><input type="radio" id="q53-2" name="question53" value="2"> 2</label>
+                <label><input type="radio" id="q53-3" name="question53" value="3"> 3</label>
+                <label><input type="radio" id="q53-4" name="question53" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>54. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q54-na" name="question54" value="NA"> NA</label>
+                <label><input type="radio" id="q54-0" name="question54" value="0"> 0</label>
+                <label><input type="radio" id="q54-1" name="question54" value="1"> 1</label>
+                <label><input type="radio" id="q54-2" name="question54" value="2"> 2</label>
+                <label><input type="radio" id="q54-3" name="question54" value="3"> 3</label>
+                <label><input type="radio" id="q54-4" name="question54" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>55. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q55-na" name="question55" value="NA"> NA</label>
+                <label><input type="radio" id="q55-0" name="question55" value="0"> 0</label>
+                <label><input type="radio" id="q55-1" name="question55" value="1"> 1</label>
+                <label><input type="radio" id="q55-2" name="question55" value="2"> 2</label>
+                <label><input type="radio" id="q55-3" name="question55" value="3"> 3</label>
+                <label><input type="radio" id="q55-4" name="question55" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>56. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q56-na" name="question56" value="NA"> NA</label>
+                <label><input type="radio" id="q56-0" name="question56" value="0"> 0</label>
+                <label><input type="radio" id="q56-1" name="question56" value="1"> 1</label>
+                <label><input type="radio" id="q56-2" name="question56" value="2"> 2</label>
+                <label><input type="radio" id="q56-3" name="question56" value="3"> 3</label>
+                <label><input type="radio" id="q56-4" name="question56" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>57. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q57-na" name="question57" value="NA"> NA</label>
+                <label><input type="radio" id="q57-0" name="question57" value="0"> 0</label>
+                <label><input type="radio" id="q57-1" name="question57" value="1"> 1</label>
+                <label><input type="radio" id="q57-2" name="question57" value="2"> 2</label>
+                <label><input type="radio" id="q57-3" name="question57" value="3"> 3</label>
+                <label><input type="radio" id="q57-4" name="question57" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>58. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q58-na" name="question58" value="NA"> NA</label>
+                <label><input type="radio" id="q58-0" name="question58" value="0"> 0</label>
+                <label><input type="radio" id="q58-1" name="question58" value="1"> 1</label>
+                <label><input type="radio" id="q58-2" name="question58" value="2"> 2</label>
+                <label><input type="radio" id="q58-3" name="question58" value="3"> 3</label>
+                <label><input type="radio" id="q58-4" name="question58" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>59. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q59-na" name="question59" value="NA"> NA</label>
+                <label><input type="radio" id="q59-0" name="question59" value="0"> 0</label>
+                <label><input type="radio" id="q59-1" name="question59" value="1"> 1</label>
+                <label><input type="radio" id="q59-2" name="question59" value="2"> 2</label>
+                <label><input type="radio" id="q59-3" name="question59" value="3"> 3</label>
+                <label><input type="radio" id="q59-4" name="question59" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>60. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q60-na" name="question60" value="NA"> NA</label>
+                <label><input type="radio" id="q60-0" name="question60" value="0"> 0</label>
+                <label><input type="radio" id="q60-1" name="question60" value="1"> 1</label>
+                <label><input type="radio" id="q60-2" name="question60" value="2"> 2</label>
+                <label><input type="radio" id="q60-3" name="question60" value="3"> 3</label>
+                <label><input type="radio" id="q60-4" name="question60" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>61. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q61-na" name="question61" value="NA"> NA</label>
+                <label><input type="radio" id="q61-0" name="question61" value="0"> 0</label>
+                <label><input type="radio" id="q61-1" name="question61" value="1"> 1</label>
+                <label><input type="radio" id="q61-2" name="question61" value="2"> 2</label>
+                <label><input type="radio" id="q61-3" name="question61" value="3"> 3</label>
+                <label><input type="radio" id="q61-4" name="question61" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>62. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q62-na" name="question62" value="NA"> NA</label>
+                <label><input type="radio" id="q62-0" name="question62" value="0"> 0</label>
+                <label><input type="radio" id="q62-1" name="question62" value="1"> 1</label>
+                <label><input type="radio" id="q62-2" name="question62" value="2"> 2</label>
+                <label><input type="radio" id="q62-3" name="question62" value="3"> 3</label>
+                <label><input type="radio" id="q62-4" name="question62" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>63. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q63-na" name="question63" value="NA"> NA</label>
+                <label><input type="radio" id="q63-0" name="question63" value="0"> 0</label>
+                <label><input type="radio" id="q63-1" name="question63" value="1"> 1</label>
+                <label><input type="radio" id="q63-2" name="question63" value="2"> 2</label>
+                <label><input type="radio" id="q63-3" name="question63" value="3"> 3</label>
+                <label><input type="radio" id="q63-4" name="question63" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>64. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q64-na" name="question64" value="NA"> NA</label>
+                <label><input type="radio" id="q64-0" name="question64" value="0"> 0</label>
+                <label><input type="radio" id="q64-1" name="question64" value="1"> 1</label>
+                <label><input type="radio" id="q64-2" name="question64" value="2"> 2</label>
+                <label><input type="radio" id="q64-3" name="question64" value="3"> 3</label>
+                <label><input type="radio" id="q64-4" name="question64" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>65. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q65-na" name="question65" value="NA"> NA</label>
+                <label><input type="radio" id="q65-0" name="question65" value="0"> 0</label>
+                <label><input type="radio" id="q65-1" name="question65" value="1"> 1</label>
+                <label><input type="radio" id="q65-2" name="question65" value="2"> 2</label>
+                <label><input type="radio" id="q65-3" name="question65" value="3"> 3</label>
+                <label><input type="radio" id="q65-4" name="question65" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>66. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q66-na" name="question66" value="NA"> NA</label>
+                <label><input type="radio" id="q66-0" name="question66" value="0"> 0</label>
+                <label><input type="radio" id="q66-1" name="question66" value="1"> 1</label>
+                <label><input type="radio" id="q66-2" name="question66" value="2"> 2</label>
+                <label><input type="radio" id="q66-3" name="question66" value="3"> 3</label>
+                <label><input type="radio" id="q66-4" name="question66" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>67. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q67-na" name="question67" value="NA"> NA</label>
+                <label><input type="radio" id="q67-0" name="question67" value="0"> 0</label>
+                <label><input type="radio" id="q67-1" name="question67" value="1"> 1</label>
+                <label><input type="radio" id="q67-2" name="question67" value="2"> 2</label>
+                <label><input type="radio" id="q67-3" name="question67" value="3"> 3</label>
+                <label><input type="radio" id="q67-4" name="question67" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>68. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q68-na" name="question68" value="NA"> NA</label>
+                <label><input type="radio" id="q68-0" name="question68" value="0"> 0</label>
+                <label><input type="radio" id="q68-1" name="question68" value="1"> 1</label>
+                <label><input type="radio" id="q68-2" name="question68" value="2"> 2</label>
+                <label><input type="radio" id="q68-3" name="question68" value="3"> 3</label>
+                <label><input type="radio" id="q68-4" name="question68" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>69. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q69-na" name="question69" value="NA"> NA</label>
+                <label><input type="radio" id="q69-0" name="question69" value="0"> 0</label>
+                <label><input type="radio" id="q69-1" name="question69" value="1"> 1</label>
+                <label><input type="radio" id="q69-2" name="question69" value="2"> 2</label>
+                <label><input type="radio" id="q69-3" name="question69" value="3"> 3</label>
+                <label><input type="radio" id="q69-4" name="question69" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>70. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q70-na" name="question70" value="NA"> NA</label>
+                <label><input type="radio" id="q70-0" name="question70" value="0"> 0</label>
+                <label><input type="radio" id="q70-1" name="question70" value="1"> 1</label>
+                <label><input type="radio" id="q70-2" name="question70" value="2"> 2</label>
+                <label><input type="radio" id="q70-3" name="question70" value="3"> 3</label>
+                <label><input type="radio" id="q70-4" name="question70" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>71. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q71-na" name="question71" value="NA"> NA</label>
+                <label><input type="radio" id="q71-0" name="question71" value="0"> 0</label>
+                <label><input type="radio" id="q71-1" name="question71" value="1"> 1</label>
+                <label><input type="radio" id="q71-2" name="question71" value="2"> 2</label>
+                <label><input type="radio" id="q71-3" name="question71" value="3"> 3</label>
+                <label><input type="radio" id="q71-4" name="question71" value="4"> 4</label>
+            </div>
+        </div>
+
+        <div class="question">
+            <p>72. Question text goes here</p>
+            <div class="options">
+                <label><input type="radio" id="q72-na" name="question72" value="NA"> NA</label>
+                <label><input type="radio" id="q72-0" name="question72" value="0"> 0</label>
+                <label><input type="radio" id="q72-1" name="question72" value="1"> 1</label>
+                <label><input type="radio" id="q72-2" name="question72" value="2"> 2</label>
+                <label><input type="radio" id="q72-3" name="question72" value="3"> 3</label>
+                <label><input type="radio" id="q72-4" name="question72" value="4"> 4</label>
+            </div>
+        </div>
+
+        <button type="submit">Submit</button>
+    </form>
+    </body>
+</html>
