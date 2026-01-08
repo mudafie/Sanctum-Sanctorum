@@ -1,7 +1,7 @@
 {
     "name": "add-questionnaire",
     "version": "1.0.0",
-    "description": "A simple Express server to handle questionnaire submissions and save them to a CSV file.",
+    "description": "Amen Clinic ADD Type Questionnaire",
     "main": "server.js",
     "scripts": {
         "start": "node server.js"
