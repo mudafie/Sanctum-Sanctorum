@@ -66,7 +66,15 @@ async function appendToSheet(data) {
 // Handle form submission
 app.post('/submit', async (req, res) => {
     const responses = req.body;
-    const timestamp = new Date().toISOString();
+    const timestamp = now.toLocaleString('en-US', {
+        timeZone: 'America/Chicago',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
     const name = responses.participantName || 'Not provided';
     
     // Prepare response row
