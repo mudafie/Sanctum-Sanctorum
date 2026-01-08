@@ -23,7 +23,7 @@ app.post('/submit', (req, res) => {
 
     // Create header row if file doesn't exist
     if (!fileExists) {
-        const headers = ['Timestamp'];
+        const headers = ['Timestamp', 'Name'];
         for (let i = 1; i <= 72; i++) {
             headers.push(`Question ${i}`);
         }
@@ -31,7 +31,8 @@ app.post('/submit', (req, res) => {
     }
 
     // Prepare response row
-    const row = [timestamp];
+    const name = responses.participantName || 'Not provided';
+    const row = [timestamp, name];
     for (let i = 1; i <= 72; i++) {
         const answer = responses[`question${i}`] || 'Not answered';
         row.push(answer);
