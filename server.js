@@ -66,6 +66,7 @@ async function appendToSheet(data) {
 // Handle form submission
 app.post('/submit', async (req, res) => {
     const responses = req.body;
+    const now = new Date();
     const timestamp = now.toLocaleString('en-US', {
         timeZone: 'America/Chicago',
         year: 'numeric',
