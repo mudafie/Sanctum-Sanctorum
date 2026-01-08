@@ -12,13 +12,23 @@ app.use(express.json());
 // Serve the HTML form
 app.use(express.static(__dirname));
 
+//Serve index.html at root path
+app.get('?', (req, res) => {
+    res.sendFile(_dirname + '/index.html');
+}
+
 // Google Sheets setup
 const SHEET_ID = '15vj6NQxvbrGEjJqAu5fq4PD2duMabGtI-p7LP_fGK8g';
 
 async function appendToSheet(data) {
     try {
-        // Load credentials
-        const credentials = JSON.parse(fs.readFileSync('credentials.json'));
+        // Load credentials from environment variable or file
+        let credentials;
+        if (process.env.GOOGLE_CREDENTIALS) {
+            credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
+        } else {
+            credentials = JSON.parse(fs.readFileSync('credentials.json'));
+        }
         
         // Authenticate
         const auth = new google.auth.GoogleAuth({
