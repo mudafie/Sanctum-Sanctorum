@@ -13,9 +13,9 @@ app.use(express.json());
 app.use(express.static(__dirname));
 
 //Serve index.html at root path
-app.get('/', (req, res)) => {
+app.get('/', (req, res) => {
     res.sendFile(_dirname + '/index.html');
-}
+});
 
 // Google Sheets setup
 const SHEET_ID = '15vj6NQxvbrGEjJqAu5fq4PD2duMabGtI-p7LP_fGK8g';
