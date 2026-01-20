@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Article 990 - Affidavit of Response Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.1.6/pizzip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.42.3/docxtemplater.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 24px; background: #f7f7f8; }
+    .wrap { max-width: 980px; margin: 0 auto; }
+    .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 18px; margin-bottom: 14px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+    h1 { margin: 0 0 6px; font-size: 22px; }
+    .muted { color: #4b5563; font-size: 13px; margin: 0; }
+    label { display: block; font-size: 13px; color: #374151; margin-bottom: 6px; }
+    input[type="text"], input[type="email"], select, textarea {
+      width: 100%; padding: 10px 10px; border: 1px solid #d1d5db; border-radius: 10px; font-size: 14px; background: #fff;
+    }
+    textarea { min-height: 120px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .grid { display: grid; gap: 12px; }
+    .grid2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 860px) { .grid2, .grid3 { grid-template-columns: 1fr; } }
+    .row { display: flex; gap: 14px; flex-wrap: wrap; align-items: center; }
+    .radio { display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
+    .radio input { transform: translateY(1px); }
+    button {
+      width: 100%; padding: 14px 14px; border: none; border-radius: 12px;
+      background: #2563eb; color: #fff; font-weight: 700; font-size: 16px; cursor: pointer;
+    }
+    button:hover { background: #1d4ed8; }
+    .ok { color: #065f46; font-size: 13px; margin-top: 6px; }
+    .warn { color: #92400e; font-size: 13px; margin-top: 6px; }
+    .tiny { font-size: 12px; color: #6b7280; }
+    .divider { height: 1px; background: #e5e7eb; margin: 14px 0; }
+  </style>
+  </head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Louisiana Article 990 - Affidavit of Response Generator</h1>
+      <p class="muted">This runs entirely in your browser. It generates an .docx file.</p>
+    </div>
+
+    <div class="card">
+        <h2 style="margin:0 0 10px; font-size:16px;">Template</h2>
+        <label for="templateFile">Upload Word Template (.docx)</label>
+        <input id="templateFile" type="file" accept=".docx" />
+        <div class="tiny">Upload your .docx template with {{placeholders}} one time. It will be remembered.</div>
+        <div id="templateStatus" class="tiny" style="margin-top:6px;"></div>
+    </div>
+
+    <div class="card">
+        <h2 style="margin:0 0 10px; font-size:16px;">File Information</h2>
+        <div class="grid grid2">
+            <div>
+                <label for="fileNumber">Office File Number</label>
+                <input id="fileNumber" name="fileNumber" type="text" placeholder="e.g., L-123456" />
+            </div>
+            <div>
+                <label for="logNumber">Bureau Log Number</label>
+                <input id="logNumber" name="logNumber" type="text" placeholder="e.g., EXP-123456" />
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 10px; font-size:16px;">Case Caption</h2>
+      <div class="grid grid2">
+        <div>
+          <label for="defendantName">Defendant Name</label>
+          <input id="defendantName" name="defendantName" type="text" placeholder="e.g., Barb Dwyer" />
+        </div>
+        <div>
+          <label for="parish">Parish</label>
+          <select id="parish" name="parish">
+            <option value="">Select Parish</option>
+          </select>
+          <div id="districtHint" class="ok" style="display:none;"></div>
+        </div>
+
+        <div>
+          <label for="docketNumber">Docket Number</label>
+          <input id="docketNumber" name="docketNumber" type="text" placeholder="e.g., 25-123456" />
+        </div>
+        <div>
+          <label for="division">Division</label>
+          <input id="division" name="division" type="text" placeholder="Leave blank if none" />
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+        <h2 style="margin:0 0 10px; font-size:16px;">Responding Party</h2>
+
+        <label for="respondingParty">I am generating a response for:</label>
+        <select id="respondingParty" name="respondingParty">
+            <option value="bureau" selected>Louisiana Bureau of Criminal Identification &amp; Information</option>
+            <option value="da">District Attorney</option>
+            <option value="agency">Arresting Agency</option>
+        </select>
+    </div>
+
+    <div class="card" id="section-da">
+      <h2 style="margin:0 0 10px; font-size:16px;">District Attorney Response</h2>
+      <div class="row" style="margin-bottom:10px;">
+        <label class="radio"><input type="radio" name="daResponse" value="no-opposition" checked> No Opposition</label>
+        <label class="radio"><input type="radio" name="daResponse" value="opposition"> Opposition with Reasons</label>
+      </div>
+      <div class="grid grid2">
+        <div>
+          <label for="daName">DA Name (auto-filled by parish)</label>
+          <input id="daName" name="daName" type="text" placeholder="Auto-filled based on parish" />
+          <div class="tiny">You can override it manually if needed.</div>
+        </div>
+        <div>
+          <label for="daObjectionText">DA Objection Text (only used if opposing)</label>
+          <textarea id="daObjectionText" name="daObjectionText" placeholder="Enter the complete objection text here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="section-bureau">
+      <h2 style="margin:0 0 10px; font-size:16px;">Louisiana Bureau Response</h2>
+      <div class="row" style="margin-bottom:10px;">
+        <label class="radio"><input type="radio" name="bureauResponse" value="no-opposition" checked> No Opposition</label>
+        <label class="radio"><input type="radio" name="bureauResponse" value="opposition"> Opposition with Reasons</label>
+      </div>
+      <div class="grid grid2">
+        <div>
+          <label for="bureauNoOppositionText">Bureau No Opposition Text</label>
+          <input id="bureauNoOppositionText" name="bureauNoOppositionText" type="text" value="The Bureau does not oppose this motion for expungement." />
+        </div>
+        <div>
+          <label for="bureauObjectionText">Bureau Objection Text (only used if opposing)</label>
+          <textarea id="bureauObjectionText" name="bureauObjectionText" placeholder="Enter the complete objection text here..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" id="section-agency">
+      <h2 style="margin:0 0 10px; font-size:16px;">Arresting Agency Response</h2>
+      <div class="grid grid2">
+        <div>
+          <label for="agencyName">Agency Name</label>
+          <input id="agencyName" name="agencyName" type="text" placeholder="e.g., Louisiana State Police" />
+        </div>
+        <div>
+          <label for="agencyNoOppositionText">Agency No Opposition Text</label>
+          <input id="agencyNoOppositionText" name="agencyNoOppositionText" type="text" placeholder="Optional if agency is 'no opposition'" />
+        </div>
+      </div>
+
+      <div class="row" style="margin:12px 0;">
+        <label class="radio"><input type="radio" name="agencyResponse" value="no-opposition" checked> No Opposition</label>
+        <label class="radio"><input type="radio" name="agencyResponse" value="opposition"> Opposition with Reasons</label>
+      </div>
+
+      <label for="agencyObjectionText">Agency Objection Text (only used if opposing)</label>
+      <textarea id="agencyObjectionText" name="agencyObjectionText" placeholder="Enter the complete objection text here..."></textarea>
+    </div>
+
+    <div class="card">
+      <h2 style="margin:0 0 10px; font-size:16px;">Please Serve</h2>
+      <div class="grid grid2">
+        <div>
+          <label for="arrestingAgency">Arresting Law Enforcement Agency</label>
+          <input id="arrestingAgency" name="arrestingAgency" type="text" placeholder="e.g., Louisiana State Police" />
+        </div>
+        <div>
+          <label for="defenseAttorney">Defense Attorney/Defendant Name</label>
+          <input id="defenseAttorney" name="defenseAttorney" type="text" placeholder="e.g., Barb Dwyer" />
+        </div>
+        <div>
+          <label for="defenseAddress">Defense Address</label>
+          <input id="defenseAddress" name="defenseAddress" type="text" placeholder="e.g., 123 Main Street, Anytown, LA 70000" />
+        </div>
+        <div>
+            <label for="serviceDate">Service Date (day number)</label>
+            <input id="serviceDate" name="serviceDate" type="text" />
+            <div class="tiny">Auto-filled with today's date. You can edit if needed.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <button id="generateBtn" type="button">Generate DOCX Document</button>
+      <div id="status" class="tiny" style="margin-top:10px;"></div>
+      <div class="warn">Upload a template first, then fill out the form and click generate!</div>
+    </div>
+  </div>
+
+  <script>
+    const parishData = {
+        "Acadia": { district: "15TH", da: "Donald D. Landry" },
+        "Allen": { district: "33RD", da: "Joe Green" },
+        "Ascension": { district: "23RD", da: "Ricky Babin" },
+        "Assumption": { district: "23RD", da: "Ricky Babin" },
+        "Avoyelles": { district: "12TH", da: "Charles A. Riddle, III" },
+        "Beauregard": { district: "36TH", da: "James R. Lestage" },
+        "Bienville": { district: "2ND", da: "Danny Newell" },
+        "Bossier": { district: "26TH", da: "John \"Schuyler\" Marvin" },
+        "Caddo": { district: "1ST", da: "James E. Stewart, Sr." },
+        "Calcasieu": { district: "14TH", da: "Stephen Dwight" },
+        "Caldwell": { district: "37TH", da: "Brian Frazier" },
+        "Cameron": { district: "38TH", da: "W. Thomas Barrett, III" },
+        "Catahoula": { district: "7TH", da: "Bradley R. Burget" },
+        "Claiborne": { district: "2ND", da: "Danny Newell" },
+        "Concordia": { district: "7TH", da: "Bradley R. Burget" },
+        "DeSoto": { district: "42ND", da: "Charles B. Adams" },
+        "East Baton Rouge": { district: "19TH", da: "Hillar C. Moore, III" },
+        "East Carroll": { district: "6TH", da: "James E. Paxton" },
+        "East Feliciana": { district: "20TH", da: "Samuel C'Aquilla" },
+        "Evangeline": { district: "13TH", da: "Trent Brignac" },
+        "Franklin": { district: "5TH", da: "Penny Douciere" },
+        "Grant": { district: "35TH", da: "James \"Jay\" P. Lemoine" },
+        "Iberia": { district: "16TH", da: "M. Michael Haik, III" },
+        "Iberville": { district: "18TH", da: "Antonio M. Clayton" },
+        "Jackson": { district: "2ND", da: "Danny Newell" },
+        "Jefferson": { district: "24TH", da: "Paul D. Connick, Jr." },
+        "Jefferson Davis": { district: "31ST", da: "Lauren Heinen" },
+        "Lafayette": { district: "15TH", da: "Donald D. Landry" },
+        "Lafourche": { district: "17TH", da: "Kristine M. Russell" },
+        "LaSalle": { district: "28TH", da: "J. Reed Walters" },
+        "Lincoln": { district: "3RD", da: "John F. Belton" },
+        "Livingston": { district: "21ST", da: "Scott M. Perrilloux" },
+        "Madison": { district: "6TH", da: "James E. Paxton" },
+        "Morehouse": { district: "4TH", da: "Robert S. Tew" },
+        "Natchitoches": { district: "10TH", da: "Billy Joe Harrington" },
+        "Orleans": { district: "41ST", da: "Jason R. Williams" },
+        "Ouachita": { district: "4TH", da: "Robert S. Tew" },
+        "Plaquemines": { district: "25TH", da: "Charles J. Ballay" },
+        "Pointe Coupee": { district: "18TH", da: "Antonio M. Clayton" },
+        "Rapides": { district: "9TH", da: "Phillip Terrell, Jr." },
+        "Red River": { district: "39TH", da: "Julie C. Jones" },
+        "Richland": { district: "5TH", da: "Penny Douciere" },
+        "Sabine": { district: "11TH", da: "Don M. Burkett" },
+        "St. Bernard": { district: "34TH", da: "Perry M. Nicosia" },
+        "St. Charles": { district: "29TH", da: "Joel T. Chaisson II" },
+        "St. Helena": { district: "21ST", da: "Scott M. Perrilloux" },
+        "St. James": { district: "23RD", da: "Ricky Babin" },
+        "St. John the Baptist": { district: "40TH", da: "Bridget A. Dinvaut" },
+        "St. Landry": { district: "27TH", da: "Chad P. Pitre" },
+        "St. Martin": { district: "16TH", da: "M. Michael Haik, III" },
+        "St. Mary": { district: "16TH", da: "M. Michael Haik, III" },
+        "St. Tammany": { district: "22ND", da: "J. Collin Sims" },
+        "Tangipahoa": { district: "21ST", da: "Scott M. Perrilloux" },
+        "Tensas": { district: "6TH", da: "James E. Paxton" },
+        "Terrebonne": { district: "32ND", da: "Joseph L. Waitz, Jr." },
+        "Union": { district: "3RD", da: "John F. Belton" },
+        "Vermilion": { district: "15TH", da: "Donald D. Landry" },
+        "Vernon": { district: "30TH", da: "Terry Lambright" },
+        "Washington": { district: "22ND", da: "J. Collin Sims" },
+        "Webster": { district: "26TH", da: "John \"Schuyler\" Marvin" },
+        "West Baton Rouge": { district: "18TH", da: "Antonio M. Clayton" },
+        "West Carroll": { district: "5TH", da: "Penny Douciere" },
+        "West Feliciana": { district: "20TH", da: "Samuel C'Aquilla" },
+        "Winn": { district: "8TH", da: "R. Chris Nevils" }
+    }
+
+    // Helpers
+    const $ = (id) => document.getElementById(id);
+
+    function getRadio(name) {
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      return el ? el.value : "";
+    }
+
+    function populateParishes() {
+      const parishSelect = $("parish");
+      const parishes = Object.keys(parishData).sort((a,b) => a.localeCompare(b));
+      for (const p of parishes) {
+        const opt = document.createElement("option");
+        opt.value = p;
+        opt.textContent = p;
+        parishSelect.appendChild(opt);
+      }
+    }
+
+    function updateDaAndDistrict() {
+      const p = $("parish").value;
+      const hint = $("districtHint");
+
+      if (p && parishData[p]) {
+        if (!$("daName").dataset.touched) {
+          $("daName").value = parishData[p].da || "";
+        }
+        const dist = parishData[p].district || "";
+        hint.textContent = `✓ ${dist} Judicial District Court`;
+        hint.style.display = dist ? "block" : "none";
+      } else {
+        hint.style.display = "none";
+      }
+    }
+
+    function updateVisibleSections() {
+        const selector = $("respondingParty");
+        const da = $("section-da");
+        const bureau = $("section-bureau");
+        const agency = $("section-agency");
+
+        if (!selector || !da || !bureau || !agency) return;
+
+        const selected = selector.value;
+
+        da.style.display = selected === "da" ? "block" : "none";
+        bureau.style.display = selected === "bureau" ? "block" : "none";
+        agency.style.display = selected === "agency" ? "block" : "none";
+    }
+
+    function generateDocx(templateArrayBuffer, data) {
+        try {
+            const zip = new PizZip(templateArrayBuffer);
+            const doc = new window.docxtemplater(zip, { 
+                paragraphLoop: true, 
+                lineBreaks: true
+            });
+            doc.setData(data);
+            doc.render(data);
+            
+            const blob = doc.getZip().generate({ 
+                type: "blob",
+                mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            });
+
+            return blob;
+        } catch (error) {
+            console.error("Error generating DOCX:", error);
+            throw error;
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        // Initialize parishes
+        populateParishes();
+        updateDaAndDistrict();
+    
+        // Set up visibility toggle
+        const selector = $("respondingParty");
+        if (!selector) {
+            console.error("Missing element: #respondingParty");
+            return;
+        }
+
+        selector.addEventListener("change", updateVisibleSections);
+
+        // Force correct initial state
+        selector.value = selector.value || "bureau";
+        updateVisibleSections();
+
+        //Auto-populate service date with today's date
+        const today = new Date();
+        const day = String(today.getDate()).padStart(2, '0');
+        $("serviceDate").value = day;
+
+        // Track manual edits to DA name
+        $("daName").addEventListener("input", () => {
+          $("daName").dataset.touched = "1";
+        });
+
+        $("parish").addEventListener("change", () => {
+          if (!$("daName").value.trim()) {
+            delete $("daName").dataset.touched;
+          }
+          updateDaAndDistrict();
+        });
+
+        //Template upload handler
+        $("templateFile").addEventListener("change", (e) => {
+          const file = event.target.files[0];
+          const status = $("templateStatus");
+          if (!file) {
+            status.textContent = "No file selected.";
+            return;
+          }
+          if (file.type !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+            status.textContent = "Please upload a valid .docx file.";
+            return;
+          }
+
+          const reader = new FileReader();
+          reader.onload = (evt) => {
+            templateContent = evt.target.result;
+            $("templateStatus").textContent = `✓ Loaded template: ${file.name}`;
+            $("templateStatus").style.color = "#065f46";
+            $("generateBtn").disabled = false;
+          };
+          reader.onerror = () => {
+            $("templateStatus").textContent = "✗ Error reading file.";
+            $("templateStatus").style.color = "#b45309";
+          };
+            reader.readAsArrayBuffer(file);
+        });
+
+        $("generateBtn").addEventListener("click", () => {
+          if (!templateContent) {
+            $("status").textContent = "Please upload a template first.";
+            $("status").style.color = "#b45309";
+            return;
+          }
+          respondingParty = $("respondingParty").value;
+
+          const data = {
+            fileNumber: $("fileNumber").value.trim(),
+            logNumber: $("logNumber").value.trim(),
+            defendantName: $("defendantName").value.trim(),
+            docketNumber: $("docketNumber").value.trim(),
+            division: $("division").value.trim(),
+            parish: $("parish").value,
+            parishUpper: $("parish").value ? $("parish").value.toUpperCase() : "",
+            district: $("parish").value && parishData[$("parish").value] ? parishData[$("parish").value].district : "",
+            daName: $("daName").value.trim(),
+            daResponse: getRadio("daResponse"),
+            daNoOpposition: getRadio("daResponse") === "no-opposition",
+            daOpposition: getRadio("daResponse") === "opposition",
+            daObjectionText: $("daObjectionText").value.trim(),
+            bureauResponse: getRadio("bureauResponse"),
+            bureauNoOpposition: getRadio("bureauResponse") === "no-opposition",
+            bureauOpposition: getRadio("bureauResponse") === "opposition",
+            bureauNoOppositionText: $("bureauNoOppositionText").value.trim(),
+            bureauObjectionText: $("bureauObjectionText").value.trim(),
+            agencyName: $("agencyName").value.trim(),
+            agencyResponse: getRadio("agencyResponse"),
+            agencyNoOpposition: getRadio("agencyResponse") === "no-opposition",
+            agencyOpposition: getRadio("agencyResponse") === "opposition",
+            agencyNoOppositionText: $("agencyNoOppositionText").value.trim(),
+            agencyObjectionText: $("agencyObjectionText").value.trim(),
+            arrestingAgency: $("arrestingAgency").value.trim(),
+            defenseAttorney: $("defenseAttorney").value.trim(),
+            defenseAddress: $("defenseAddress").value.trim(),
+            serviceDate: $("serviceDate").value.trim()
+          };
+
+          //Control which sections show
+          showDA: respondingParty === "da";
+          showBureau: respondingParty === "bureau";
+          showAgency: respondingParty === "agency";
+          showOR: respondingParty === "da" || respondingParty === "bureau";
+          showOR2: respondingParty === "bureau" || respondingParty === "agency";
+
+          const status = $("status");
+          status.textContent = "";
+          const missing = [];
+          if (!data.defendantName) missing.push("Defendant Name");
+          if (!data.parish) missing.push("Parish");
+          if (!data.docketNumber) missing.push("Docket Number");
+
+          if (missing.length) {
+            status.textContent = "Missing required: " + missing.join(", ");
+            status.style.color = "#b45309";
+            return;
+          }
+
+          // Determine if showing no opposition box
+          let showNoOpp = false;
+          let noOpText = "The respondent does not oppose this motion for expungement.";
+
+          if (respondingParty === "da" && data.daNoOpposition) showNoOpp = true;
+          if (respondingParty === "bureau" && data.bureauNoOpposition) { 
+            showNoOpp = true;
+            if (data.bureauNoOppositionText) noOpText = data.bureauNoOppositionText;
+          }
+          if (respondingParty === "agency" && data.agencyNoOpposition) { 
+            showNoOpp = true;
+            if (data.agencyNoOppositionText) noOpText = data.agencyNoOppositionText;
+          }
+
+          data.showNoOppositionBox = showNoOpp;
+          data.noOppositionText = noOpText;
+
+          //Determine opposition status for filename
+          let responseStatus = "NoOpposition";
+            if (respondingParty === "da" && data.daOpposition) responseStatus = "Opposition";
+            if (respondingParty === "bureau" && data.bureauOpposition) responseStatus = "Opposition";
+            if (respondingParty === "agency" && data.agencyOpposition) responseStatus = "Opposition";
+
+          try {
+            const blob = generateDocx(templateContent, data);
+            
+            const safeFile = (data.fileNumber || "NoFile").replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
+            const safeLog = (data.logNumber || "NoLog").replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
+            const safeName = data.defendantName.replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
+            const safeDocket = data.docketNumber.replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
+            const safeParish = data.parish.replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
+
+            const filename = `${safeFile} ${safeLog} ${safeName} ${safeDocket} ${safeParish} ${responseStatus}.docx`;
+
+            saveAs(blob, filename);
+            status.textContent = "Generated and downloaded: " + filename;
+            status.style.color = "#065f46";
+          } catch (err) {
+            status.textContent = "Error generating document.";
+            status.style.color = "#b45309";
+            console.error("Error:", err);
+          }
+        });
+      });
+    </script>
+</body>
+</html>
