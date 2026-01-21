@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Article 990 - Affidavit of Response Generator</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.1.6/pizzip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.42.3/docxtemplater.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <style>
@@ -310,25 +310,25 @@
     }
 
     function generateDocx(templateArrayBuffer, data) {
-        try {
-            const zip = new PizZip(templateArrayBuffer);
-            const doc = new window.docxtemplater(zip, { 
-                paragraphLoop: true, 
-                lineBreaks: true
-            });
-            doc.setData(data);
-            doc.render(data);
-            
-            const blob = doc.getZip().generate({ 
-                type: "blob",
-                mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            });
+      try {
+        const zip = new JSZip(templateArrayBuffer);  // Changed from PizZip
+        const doc = new window.docxtemplater(zip, {
+          paragraphLoop: true,
+          linebreaks: true,
+        });
 
-            return blob;
-        } catch (error) {
-            console.error("Error generating DOCX:", error);
-            throw error;
-        }
+        doc.render(data);
+
+        const blob = doc.getZip().generate({
+          type: "blob",
+          mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        });
+
+        return blob;
+      } catch (error) {
+        console.error("Error generating docx:", error);
+        throw error;
+      }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
