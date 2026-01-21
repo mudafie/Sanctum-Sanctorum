@@ -286,12 +286,6 @@
                 populateParishes();
                 updateDaAndDistrict();
 
-                selector.addEventListener("change", updateVisibleSections);
-
-                // Force correct initial state
-                selector.value = selector.value || "bureau";
-                updateVisibleSections();
-
                 // Auto-set to today
                 const today = new Date();
                 $("serviceDatePicker").value = today.toISOString().split("T")[0];
