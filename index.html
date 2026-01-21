@@ -92,36 +92,6 @@
                 </div>
             </div>
 
-            <div class="card">
-                <h2 style="margin:0 0 10px; font-size:16px;">Responding Party</h2>
-
-                <label for="respondingParty">I am generating a response for:</label>
-                <select id="respondingParty" name="respondingParty">
-                    <option value="bureau" selected>Louisiana Bureau of Criminal Identification &amp; Information</option>
-                    <option value="da">District Attorney</option>
-                    <option value="agency">Arresting Agency</option>
-                </select>
-            </div>
-
-            <div class="card" id="section-da">
-                <h2 style="margin:0 0 10px; font-size:16px;">District Attorney Response</h2>
-                <div class="row" style="margin-bottom:10px;">
-                    <label class="radio"><input type="radio" name="daResponse" value="no-opposition" checked> No Opposition</label>
-                    <label class="radio"><input type="radio" name="daResponse" value="opposition"> Opposition with Reasons</label>
-                </div>
-                <div class="grid grid2">
-                    <div>
-                        <label for="daName">DA Name (auto-filled by parish)</label>
-                        <input id="daName" name="daName" type="text" placeholder="Auto-filled based on parish" />
-                        <div class="tiny">You can override it manually if needed.</div>
-                    </div>
-                    <div>
-                        <label for="daObjectionText">DA Objection Text (only used if opposing)</label>
-                        <textarea id="daObjectionText" name="daObjectionText" placeholder="Enter the complete objection text here..."></textarea>
-                    </div>
-                </div>
-            </div>
-
             <div class="card" id="section-bureau">
                 <h2 style="margin:0 0 10px; font-size:16px;">Louisiana Bureau Response</h2>
                 <div class="row" style="margin-bottom:10px;">
@@ -138,28 +108,6 @@
                         <textarea id="bureauObjectionText" name="bureauObjectionText" placeholder="Enter the complete objection text here..."></textarea>
                     </div>
                 </div>
-            </div>
-
-            <div class="card" id="section-agency">
-                <h2 style="margin:0 0 10px; font-size:16px;">Arresting Agency Response</h2>
-                <div class="grid grid2">
-                    <div>
-                        <label for="agencyName">Agency Name</label>
-                        <input id="agencyName" name="agencyName" type="text" placeholder="e.g., Louisiana State Police" />
-                    </div>
-                    <div>
-                        <label for="agencyNoOppositionText">Agency No Opposition Text</label>
-                        <input id="agencyNoOppositionText" name="agencyNoOppositionText" type="text" placeholder="Optional if agency is 'no opposition'" />
-                    </div>
-                </div>
-
-                <div class="row" style="margin:12px 0;">
-                    <label class="radio"><input type="radio" name="agencyResponse" value="no-opposition" checked> No Opposition</label>
-                    <label class="radio"><input type="radio" name="agencyResponse" value="opposition"> Opposition with Reasons</label>
-                </div>
-
-                <label for="agencyObjectionText">Agency Objection Text (only used if opposing)</label>
-                <textarea id="agencyObjectionText" name="agencyObjectionText" placeholder="Enter the complete objection text here..."></textarea>
             </div>
 
             <div class="card">
@@ -296,24 +244,6 @@
                 }
             }
 
-            function updateVisibleSections() {
-                const selector = $("respondingParty");
-                const da = $("section-da");
-                const bureau = $("section-bureau");
-                const agency = $("section-agency");
-
-                if (!selector) return console.error("Missing element: #respondingParty");
-                if (!da) return console.error("Missing element: #section-da");
-                if (!bureau) return console.error("Missing element: #section-bureau");
-                if (!agency) return console.error("Missing element: #section-agency");
-
-                const selected = selector.value;
-
-                da.style.display = selected === "da" ? "block" : "none";
-                bureau.style.display = selected === "bureau" ? "block" : "none";
-                agency.style.display = selected === "agency" ? "block" : "none";
-            }
-
             function generateDocx(templateArrayBuffer, data) {
                 try {
                     const PizZipLib = window.PizZip;
@@ -355,13 +285,6 @@
                 // Initialize parishes
                 populateParishes();
                 updateDaAndDistrict();
-        
-                // Set up visibility toggle
-                const selector = $("respondingParty");
-                if (!selector) {
-                    console.error("Missing element: #respondingParty");
-                    return;
-                }
 
                 selector.addEventListener("change", updateVisibleSections);
 
@@ -437,7 +360,7 @@
                         return;
                     }
 
-                    const respondingParty = $("respondingParty").value;
+                    const respondingParty = "bureau";
 
                     const data = {
                         fileNumber: $("fileNumber").value.trim(),
@@ -449,25 +372,13 @@
                         parishUpper: $("parish").value ? $("parish").value.toUpperCase() : "",
                         district: $("parish").value && parishData[$("parish").value] ? parishData[$("parish").value].district : "",
                         daName: $("daName").value.trim(),
-                            
-                        daResponse: getRadio("daResponse"),
-                        daNoOpposition: getRadio("daResponse") === "no-opposition",
-                        daOpposition: getRadio("daResponse") === "opposition",
-                        daObjectionText: $("daObjectionText").value.trim(),
-                            
+                             
                         bureauResponse: getRadio("bureauResponse"),
                         bureauNoOpposition: getRadio("bureauResponse") === "no-opposition",
                         bureauOpposition: getRadio("bureauResponse") === "opposition",
                         bureauNoOppositionText: $("bureauNoOppositionText").value.trim(),
                         bureauObjectionText: $("bureauObjectionText").value.trim(),
-                            
-                        agencyName: $("agencyName").value.trim(),
-                        agencyResponse: getRadio("agencyResponse"),
-                        agencyNoOpposition: getRadio("agencyResponse") === "no-opposition",
-                        agencyOpposition: getRadio("agencyResponse") === "opposition",
-                        agencyNoOppositionText: $("agencyNoOppositionText").value.trim(),
-                        agencyObjectionText: $("agencyObjectionText").value.trim(),
-                            
+  
                         arrestingAgency: $("arrestingAgency").value.trim(),
                         defenseAttorney: $("defenseAttorney").value.trim(),
                         defenseAddress: $("defenseAddress").value.trim(),
@@ -480,6 +391,18 @@
                 data.showDA = true;
                 data.showBureau = true;
                 data.showAgency = true;
+
+                //We only speak for the Bureau, so DA & Agency are unchecked
+                data.daName = parishData[data.parish]?.da || "";
+                data.daNoOpposition = false;
+                data.daOpposition = false;
+                data.daObjectionText = "";
+
+                data.agencyName = "";
+                data.agencyNoOpposition = false;
+                data.agencyOpposition = false;
+                data.agencyNoOppositionText = "";
+                data.agencyObjectionText = "";
             
                 data.defendantNameUpper = data.defendantName ? data.defendantName.toUpperCase() : "";
 
@@ -496,30 +419,14 @@
                 }
 
                 // Determine if showing no opposition box
-                let showNoOpp = false;
-                let noOpText = "The respondent does not oppose this motion for expungement.";
-
-                if (respondingParty === "da" && data.daNoOpposition) {
-                    showNoOpp = true;
-                    if (data.daNoOppositionText) noOpText = data.daNoOppositionText;
-                }
-                if (respondingParty === "bureau" && data.bureauNoOpposition) { 
-                    showNoOpp = true;
-                    if (data.bureauNoOppositionText) noOpText = data.bureauNoOppositionText;
-                }
-                if (respondingParty === "agency" && data.agencyNoOpposition) { 
-                    showNoOpp = true;
-                    if (data.agencyNoOppositionText) noOpText = data.agencyNoOppositionText;
-                }
+                let showNoOpp = data.bureauNoOpposition;
+                let noOpText = data.bureauNoOppositionText || "The Bureau does not oppose this motion for expungement.";
 
                 data.showNoOppositionBox = showNoOpp;
                 data.noOppositionText = noOpText;
 
                 //Determine opposition status for filename
-                let responseStatus = "NoOpposition";
-                    if (respondingParty === "da" && data.daOpposition) responseStatus = "Opposition";
-                    if (respondingParty === "bureau" && data.bureauOpposition) responseStatus = "Opposition";
-                    if (respondingParty === "agency" && data.agencyOpposition) responseStatus = "Opposition";
+                let responseStatus = data.bureauOpposition ? "Opposition" : "NoOpposition";
 
                 try {
                     const blob = await generateDocx(templateContent, data);
