@@ -258,15 +258,24 @@
                         linebreaks: true,
                     });
 
-                    doc.render(data);
-
                     return doc.getZip().generate({
                         type: "blob",
                         mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                     });
-                } catch (error) {
-                    console.error("Error generating docx:", error);
-                    throw error;
+
+                    doc.render(data);
+                } catch (e) {
+                    console.error("DOCXTEMPLATER RENDER ERROR:", e);
+
+                    if (e.properties && Array.isArray(e.properties.errors)) {
+                        e.properties.errors.forEach((err, i) => {
+                            console.error(`Error ${i + 1}:`, err);
+                            if (err.properties && err.properties.explanation) {
+                                console.error("Explanation:", err.properties.explanation);
+                            }
+                        });
+                    }
+                    throw e;
                 }
             }    
 
