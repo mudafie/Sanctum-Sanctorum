@@ -177,9 +177,9 @@
           <input id="defenseAddress" name="defenseAddress" type="text" placeholder="e.g., 123 Main Street, Anytown, LA 70000" />
         </div>
         <div>
-            <label for="serviceDate">Service Date (day number)</label>
-            <input id="serviceDate" name="serviceDate" type="text" />
-            <div class="tiny">Auto-filled with today's date. You can edit if needed.</div>
+          <label for="serviceDatePicker">Service Date</label>
+          <input id="serviceDatePicker" type="date" style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:10px;" />
+          <div class="tiny" style="margin-top:4px;">Day number: <span id="serviceDateDisplay">--</span></div>
         </div>
       </div>
     </div>
@@ -311,7 +311,7 @@
 
     function generateDocx(templateArrayBuffer, data) {
       try {
-        const zip = new JSZip(templateArrayBuffer);  // Changed from PizZip
+        const zip = await JSZip.loadAsync(templateArrayBuffer);
         const doc = new window.docxtemplater(zip, {
           paragraphLoop: true,
           linebreaks: true,
@@ -329,6 +329,21 @@
         console.error("Error generating docx:", error);
         throw error;
       }
+    }
+    
+    function formatServiceDate(date) {
+      const day = date.getDate();
+      const month = date.toLocaleString('en-US', { month: 'long' });
+      const year = date.getFullYear();
+  
+      // Get ordinal suffix (1st, 2nd, 3rd, 4th, etc.)
+      function getOrdinal(n) {
+        const s = ["th", "st", "nd", "rd"];
+        const v = n % 100;
+        return n + (s[(v - 20) % 10] || s[v] || s[0]);
+      }
+  
+      return `${getOrdinal(day)} day of ${month}, ${year}`;
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -349,10 +364,16 @@
         selector.value = selector.value || "bureau";
         updateVisibleSections();
 
-        //Auto-populate service date with today's date
+        // Auto-set to today
         const today = new Date();
-        const day = String(today.getDate()).padStart(2, '0');
-        $("serviceDate").value = day;
+        const todayStr = today.toISOString().split('T')[0];
+        $("serviceDatePicker").value = todayStr;
+        $("serviceDateDisplay").textContent = formatServiceDate(today);
+
+        $("serviceDatePicker").addEventListener("change", (e) => {
+          const selectedDate = new Date(e.target.value + 'T00:00:00'); // Force local timezone
+          $("serviceDateDisplay").textContent = formatServiceDate(selectedDate);
+        });
 
         // Track manual edits to DA name
         $("daName").addEventListener("input", () => {
