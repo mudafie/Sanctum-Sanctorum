@@ -414,7 +414,7 @@
             reader.readAsArrayBuffer(file);
         });
 
-        $("generateBtn").addEventListener("click", () => {
+        $("generateBtn").addEventListener("click", async () => {
           if (!templateContent) {
             $("status").textContent = "Please upload a template first.";
             $("status").style.color = "#b45309";
@@ -497,7 +497,7 @@
             if (respondingParty === "agency" && data.agencyOpposition) responseStatus = "Opposition";
 
           try {
-            const blob = generateDocx(templateContent, data);
+            const blob = await generateDocx(templateContent, data);
             
             const safeFile = (data.fileNumber || "NoFile").replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
             const safeLog = (data.logNumber || "NoLog").replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
