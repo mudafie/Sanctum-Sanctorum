@@ -126,7 +126,7 @@
                         <input id="defenseAddress" name="defenseAddress" type="text" placeholder="e.g., 123 Main Street, Anytown, LA 70000" />
                     </div>
                     <div>
-                        <label for="serviceDate">Service Date</label>
+                        <label for="serviceDatePicker">Service Date</label>
                         <input id="serviceDatePicker" type="date" />
                         <div class="tiny" style="margin-top:4px;">Day number: <span id="serviceDateDisplay">--</span>
                         </div>
@@ -233,9 +233,6 @@
                 const hint = $("districtHint");
 
                 if (p && parishData[p]) {
-                    if (!$("daName").dataset.touched) {
-                        $("daName").value = parishData[p].da || "";
-                    }
                     const dist = parishData[p].district || "";
                     hint.textContent = `✓ ${dist} Judicial District Court`;
                     hint.style.display = dist ? "block" : "none";
@@ -296,17 +293,7 @@
                     $("serviceDateDisplay").textContent = formatServiceDate(selectedDate);
                 });
 
-                // Track manual edits to DA name
-                $("daName").addEventListener("input", () => {
-                    $("daName").dataset.touched = "1";
-                });
-
-                $("parish").addEventListener("change", () => {
-                    if (!$("daName").value.trim()) {
-                        delete $("daName").dataset.touched;
-                    }
-                    updateDaAndDistrict();
-                });
+                $("parish").addEventListener("change", updateDaAndDistrict);
 
                 //Template upload handler
                 let templateContent = null;
@@ -365,7 +352,6 @@
                         parish: $("parish").value,
                         parishUpper: $("parish").value ? $("parish").value.toUpperCase() : "",
                         district: $("parish").value && parishData[$("parish").value] ? parishData[$("parish").value].district : "",
-                        daName: $("daName").value.trim(),
                              
                         bureauResponse: getRadio("bureauResponse"),
                         bureauNoOpposition: getRadio("bureauResponse") === "no-opposition",
