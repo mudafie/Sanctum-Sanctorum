@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Article 990 - Affidavit of Response Generator</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.1.6/pizzip.min.js"></script>  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.42.3/docxtemplater.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <style>
@@ -314,7 +314,10 @@
 
     function generateDocx(templateArrayBuffer, data) {
       try {
-        const zip = new PizZip(templateArrayBuffer);
+        const PizZipLib = window.PizZip;
+        if (!PizZipLib) throw new Error("PizZip library not loaded. Check script tags and order")
+        
+        const zip = new PizZipLib(templateArrayBuffer);
 
         const Docxtemplater = window.docxtemplater || window.Docxtemplater;
         if (!Docxtemplater) {
@@ -504,7 +507,7 @@
 
           if (respondingParty === "da" && data.daNoOpposition) {
             showNoOpp = true;
-            if (data.daObjectionText) noOpText = data.daObjectionText;
+            if (data.daNoOppositionText) noOpText = data.daNoOppositionText;
           }
           if (respondingParty === "bureau" && data.bureauNoOpposition) { 
             showNoOpp = true;
