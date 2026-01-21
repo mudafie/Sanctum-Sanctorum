@@ -343,18 +343,12 @@
     }
 
     function formatServiceDate(date) {
-      const day = date.getDate();
+      const day = "____";
       const month = date.toLocaleString('en-US', { month: 'long' });
       const year = date.getFullYear();
-  
-      // Get ordinal suffix (1st, 2nd, 3rd, 4th, etc.)
-      function getOrdinal(n) {
-        const s = ["th", "st", "nd", "rd"];
-        const v = n % 100;
-        return n + (s[(v - 20) % 10] || s[v] || s[0]);
       }
   
-      return `${getOrdinal(day)} day of ${month}, ${year}`;
+      return `${day} day of ${month}, ${year}`;
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -377,12 +371,11 @@
 
         // Auto-set to today
         const today = new Date();
-        const todayStr = today.toISOString().split('T')[0];
-        $("serviceDatePicker").value = todayStr;
+        $("serviceDatePicker").value = today.toISOString().split("T")[0];
         $("serviceDateDisplay").textContent = formatServiceDate(today);
 
         $("serviceDatePicker").addEventListener("change", (e) => {
-          const selectedDate = new Date(e.target.value + 'T00:00:00'); // Force local timezone
+          const selectedDate = new Date(e.target.value + "T00:00:00");
           $("serviceDateDisplay").textContent = formatServiceDate(selectedDate);
         });
 
