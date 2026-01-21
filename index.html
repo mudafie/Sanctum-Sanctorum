@@ -301,7 +301,10 @@
         const bureau = $("section-bureau");
         const agency = $("section-agency");
 
-        if (!selector || !da || !bureau || !agency) return;
+        if (!selector) return console.error("Missing element: #respondingParty");
+        if (!da) return console.error("Missing element: #section-da");
+        if (!bureau) return console.error("Missing element: #section-bureau");
+        if (!agency) return console.error("Missing element: #section-agency");
 
         const selected = selector.value;
 
@@ -311,25 +314,47 @@
     }
 
     function generateDocx(templateArrayBuffer, data) {
-        try {
-            const zip = new PizZip(templateArrayBuffer);
-            const doc = new window.docxtemplater(zip, { 
-                paragraphLoop: true, 
-                lineBreaks: true
-            });
-            doc.setData(data);
-            doc.render(data);
-            
-            const blob = doc.getZip().generate({ 
-                type: "blob",
-                mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-            });
+      try {
+        const PizZipLib = window.PizZip;
+        if (!PizZipLib) throw new Error("PizZip library not loaded. Check script tags and order")
+        
+        const zip = new PizZipLib(templateArrayBuffer);
 
-            return blob;
-        } catch (error) {
-            console.error("Error generating DOCX:", error);
-            throw error;
+        const Docxtemplater = window.docxtemplater || window.Docxtemplater;
+        if (!Docxtemplater) {
+          throw new Error("Docxtemplater library not found.");
         }
+
+        const doc = new Docxtemplater(zip, {
+          paragraphLoop: true,
+          linebreaks: true,
+        });
+
+        doc.render(data);
+
+        return doc.getZip().generate({
+          type: "blob",
+          mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        });
+      } catch (error) {
+        console.error("Error generating docx:", error);
+        throw error;
+      }
+    }
+
+    function formatServiceDate(date) {
+      const day = date.getDate();
+      const month = date.toLocaleString('en-US', { month: 'long' });
+      const year = date.getFullYear();
+  
+      // Get ordinal suffix (1st, 2nd, 3rd, 4th, etc.)
+      function getOrdinal(n) {
+        const s = ["th", "st", "nd", "rd"];
+        const v = n % 100;
+        return n + (s[(v - 20) % 10] || s[v] || s[0]);
+      }
+  
+      return `${getOrdinal(day)} day of ${month}, ${year}`;
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -350,10 +375,16 @@
         selector.value = selector.value || "bureau";
         updateVisibleSections();
 
-        //Auto-populate service date with today's date
+        // Auto-set to today
         const today = new Date();
-        const day = String(today.getDate()).padStart(2, '0');
-        $("serviceDate").value = day;
+        const todayStr = today.toISOString().split('T')[0];
+        $("serviceDatePicker").value = todayStr;
+        $("serviceDateDisplay").textContent = formatServiceDate(today);
+
+        $("serviceDatePicker").addEventListener("change", (e) => {
+          const selectedDate = new Date(e.target.value + 'T00:00:00'); // Force local timezone
+          $("serviceDateDisplay").textContent = formatServiceDate(selectedDate);
+        });
 
         // Track manual edits to DA name
         $("daName").addEventListener("input", () => {
@@ -368,39 +399,52 @@
         });
 
         //Template upload handler
+        let templateContent = null;
+        
         $("templateFile").addEventListener("change", (e) => {
-          const file = event.target.files[0];
+          const file = e.target.files && e.target.files[0];
           const status = $("templateStatus");
           if (!file) {
             status.textContent = "No file selected.";
+            status.style.color = "#b45309";
+            templateContent = null;
+            $("generateBtn").disabled = true;
             return;
           }
-          if (file.type !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+          //Extension checker
+          if (!file.name.toLowerCase().endsWith(".docx")) {
             status.textContent = "Please upload a valid .docx file.";
+            status.style.color = "#b45309";
+            templateContent = null;
+            $("generateBtn").disabled = true;
             return;
           }
 
           const reader = new FileReader();
           reader.onload = (evt) => {
-            templateContent = evt.target.result;
-            $("templateStatus").textContent = `✓ Loaded template: ${file.name}`;
-            $("templateStatus").style.color = "#065f46";
+            templateContent = evt.target.result; //ArrayBuffer
+            status.textContent = `✓ Loaded template: ${file.name}`;
+            status.style.color = "#065f46";
             $("generateBtn").disabled = false;
           };
           reader.onerror = () => {
-            $("templateStatus").textContent = "✗ Error reading file.";
-            $("templateStatus").style.color = "#b45309";
+            status.textContent = "✗ Error reading file.";
+            status.style.color = "#b45309";
+            templateContent = null;
+            $("generateBtn").disabled = true;
           };
             reader.readAsArrayBuffer(file);
         });
 
-        $("generateBtn").addEventListener("click", () => {
+        $("generateBtn").addEventListener("click", async () => {
+          const status = $("status");
           if (!templateContent) {
-            $("status").textContent = "Please upload a template first.";
-            $("status").style.color = "#b45309";
+            status.textContent = "Please upload a .docx template first.";
+            status.style.color = "#b45309";
             return;
           }
-          respondingParty = $("respondingParty").value;
+
+          const respondingParty = $("respondingParty").value;
 
           const data = {
             fileNumber: $("fileNumber").value.trim(),
@@ -412,36 +456,41 @@
             parishUpper: $("parish").value ? $("parish").value.toUpperCase() : "",
             district: $("parish").value && parishData[$("parish").value] ? parishData[$("parish").value].district : "",
             daName: $("daName").value.trim(),
+            
             daResponse: getRadio("daResponse"),
             daNoOpposition: getRadio("daResponse") === "no-opposition",
             daOpposition: getRadio("daResponse") === "opposition",
             daObjectionText: $("daObjectionText").value.trim(),
+            
             bureauResponse: getRadio("bureauResponse"),
             bureauNoOpposition: getRadio("bureauResponse") === "no-opposition",
             bureauOpposition: getRadio("bureauResponse") === "opposition",
             bureauNoOppositionText: $("bureauNoOppositionText").value.trim(),
             bureauObjectionText: $("bureauObjectionText").value.trim(),
+            
             agencyName: $("agencyName").value.trim(),
             agencyResponse: getRadio("agencyResponse"),
             agencyNoOpposition: getRadio("agencyResponse") === "no-opposition",
             agencyOpposition: getRadio("agencyResponse") === "opposition",
             agencyNoOppositionText: $("agencyNoOppositionText").value.trim(),
             agencyObjectionText: $("agencyObjectionText").value.trim(),
+            
             arrestingAgency: $("arrestingAgency").value.trim(),
             defenseAttorney: $("defenseAttorney").value.trim(),
             defenseAddress: $("defenseAddress").value.trim(),
-            serviceDate: $("serviceDate").value.trim()
+            serviceDate: $("serviceDateDisplay").textContent,
+
+            respondingParty: respondingParty,
           };
 
           //Control which sections show
-          showDA: respondingParty === "da";
-          showBureau: respondingParty === "bureau";
-          showAgency: respondingParty === "agency";
-          showOR: respondingParty === "da" || respondingParty === "bureau";
-          showOR2: respondingParty === "bureau" || respondingParty === "agency";
+          data.showDA = true;
+          data.showBureau = true;
+          data.showAgency = true;
+          
+          data.defendantNameUpper = data.defendantName ? data.defendantName.toUpperCase() : "";
 
-          const status = $("status");
-          status.textContent = "";
+          // Validate required fields
           const missing = [];
           if (!data.defendantName) missing.push("Defendant Name");
           if (!data.parish) missing.push("Parish");
@@ -457,7 +506,10 @@
           let showNoOpp = false;
           let noOpText = "The respondent does not oppose this motion for expungement.";
 
-          if (respondingParty === "da" && data.daNoOpposition) showNoOpp = true;
+          if (respondingParty === "da" && data.daNoOpposition) {
+            showNoOpp = true;
+            if (data.daNoOppositionText) noOpText = data.daNoOppositionText;
+          }
           if (respondingParty === "bureau" && data.bureauNoOpposition) { 
             showNoOpp = true;
             if (data.bureauNoOppositionText) noOpText = data.bureauNoOppositionText;
@@ -477,7 +529,7 @@
             if (respondingParty === "agency" && data.agencyOpposition) responseStatus = "Opposition";
 
           try {
-            const blob = generateDocx(templateContent, data);
+            const blob = await generateDocx(templateContent, data);
             
             const safeFile = (data.fileNumber || "NoFile").replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
             const safeLog = (data.logNumber || "NoLog").replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
