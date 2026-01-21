@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Article 990 - Affidavit of Response Generator</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip/3.1.6/pizzip.min.js"></script>  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pizzip@3.1.6/dist/pizzip.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/docxtemplater/3.42.3/docxtemplater.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
   <style>
@@ -177,9 +177,9 @@
           <input id="defenseAddress" name="defenseAddress" type="text" placeholder="e.g., 123 Main Street, Anytown, LA 70000" />
         </div>
         <div>
-          <label for="serviceDatePicker">Service Date</label>
-          <input id="serviceDatePicker" type="date" style="width:100%; padding:10px; border:1px solid #d1d5db; border-radius:10px;" />
-          <div class="tiny" style="margin-top:4px;">Day number: <span id="serviceDateDisplay">--</span></div>
+            <label for="serviceDate">Service Date (day number)</label>
+            <input id="serviceDate" name="serviceDate" type="text" />
+            <div class="tiny">Auto-filled with today's date. You can edit if needed.</div>
         </div>
       </div>
     </div>
@@ -192,6 +192,10 @@
   </div>
 
   <script>
+    console.log("PizZip:", window.PizZip);
+    console.log("docxtemplater:", window.docxtemplater || window.Docxtemplater);
+    console.log("saveAs:", typeof window.saveAs);
+    
     const parishData = {
         "Acadia": { district: "15TH", da: "Donald D. Landry" },
         "Allen": { district: "33RD", da: "Joe Green" },
@@ -211,7 +215,7 @@
         "DeSoto": { district: "42ND", da: "Charles B. Adams" },
         "East Baton Rouge": { district: "19TH", da: "Hillar C. Moore, III" },
         "East Carroll": { district: "6TH", da: "James E. Paxton" },
-        "East Feliciana": { district: "20TH", da: "Samuel D'Aquilla" },
+        "East Feliciana": { district: "20TH", da: "Samuel C'Aquilla" },
         "Evangeline": { district: "13TH", da: "Trent Brignac" },
         "Franklin": { district: "5TH", da: "Penny Douciere" },
         "Grant": { district: "35TH", da: "James \"Jay\" P. Lemoine" },
@@ -255,7 +259,7 @@
         "Webster": { district: "26TH", da: "John \"Schuyler\" Marvin" },
         "West Baton Rouge": { district: "18TH", da: "Antonio M. Clayton" },
         "West Carroll": { district: "5TH", da: "Penny Douciere" },
-        "West Feliciana": { district: "20TH", da: "Samuel D'Aquilla" },
+        "West Feliciana": { district: "20TH", da: "Samuel C'Aquilla" },
         "Winn": { district: "8TH", da: "R. Chris Nevils" }
     }
 
@@ -300,10 +304,7 @@
         const bureau = $("section-bureau");
         const agency = $("section-agency");
 
-        if (!selector) return console.error("Missing element: #respondingParty");
-        if (!da) return console.error("Missing element: #section-da");
-        if (!bureau) return console.error("Missing element: #section-bureau");
-        if (!agency) return console.error("Missing element: #section-agency");
+        if (!selector || !da || !bureau || !agency) return;
 
         const selected = selector.value;
 
@@ -313,47 +314,25 @@
     }
 
     function generateDocx(templateArrayBuffer, data) {
-      try {
-        const PizZipLib = window.PizZip;
-        if (!PizZipLib) throw new Error("PizZip library not loaded. Check script tags and order")
-        
-        const zip = new PizZipLib(templateArrayBuffer);
+        try {
+            const zip = new PizZip(templateArrayBuffer);
+            const doc = new window.docxtemplater(zip, { 
+                paragraphLoop: true, 
+                lineBreaks: true
+            });
+            doc.setData(data);
+            doc.render(data);
+            
+            const blob = doc.getZip().generate({ 
+                type: "blob",
+                mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            });
 
-        const Docxtemplater = window.docxtemplater || window.Docxtemplater;
-        if (!Docxtemplater) {
-          throw new Error("Docxtemplater library not found.");
+            return blob;
+        } catch (error) {
+            console.error("Error generating DOCX:", error);
+            throw error;
         }
-
-        const doc = new Docxtemplater(zip, {
-          paragraphLoop: true,
-          linebreaks: true,
-        });
-
-        doc.render(data);
-
-        return doc.getZip().generate({
-          type: "blob",
-          mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        });
-      } catch (error) {
-        console.error("Error generating docx:", error);
-        throw error;
-      }
-    }
-    
-    function formatServiceDate(date) {
-      const day = date.getDate();
-      const month = date.toLocaleString('en-US', { month: 'long' });
-      const year = date.getFullYear();
-  
-      // Get ordinal suffix (1st, 2nd, 3rd, 4th, etc.)
-      function getOrdinal(n) {
-        const s = ["th", "st", "nd", "rd"];
-        const v = n % 100;
-        return n + (s[(v - 20) % 10] || s[v] || s[0]);
-      }
-  
-      return `${getOrdinal(day)} day of ${month}, ${year}`;
     }
 
     document.addEventListener("DOMContentLoaded", () => {
@@ -374,16 +353,10 @@
         selector.value = selector.value || "bureau";
         updateVisibleSections();
 
-        // Auto-set to today
+        //Auto-populate service date with today's date
         const today = new Date();
-        const todayStr = today.toISOString().split('T')[0];
-        $("serviceDatePicker").value = todayStr;
-        $("serviceDateDisplay").textContent = formatServiceDate(today);
-
-        $("serviceDatePicker").addEventListener("change", (e) => {
-          const selectedDate = new Date(e.target.value + 'T00:00:00'); // Force local timezone
-          $("serviceDateDisplay").textContent = formatServiceDate(selectedDate);
-        });
+        const day = String(today.getDate()).padStart(2, '0');
+        $("serviceDate").value = day;
 
         // Track manual edits to DA name
         $("daName").addEventListener("input", () => {
@@ -398,52 +371,39 @@
         });
 
         //Template upload handler
-        let templateContent = null;
-        
         $("templateFile").addEventListener("change", (e) => {
-          const file = e.target.files && e.target.files[0];
+          const file = event.target.files[0];
           const status = $("templateStatus");
           if (!file) {
             status.textContent = "No file selected.";
-            status.style.color = "#b45309";
-            templateContent = null;
-            $("generateBtn").disabled = true;
             return;
           }
-          //Extension checker
-          if (!file.name.toLowerCase().endsWith(".docx")) {
+          if (file.type !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
             status.textContent = "Please upload a valid .docx file.";
-            status.style.color = "#b45309";
-            templateContent = null;
-            $("generateBtn").disabled = true;
             return;
           }
 
           const reader = new FileReader();
           reader.onload = (evt) => {
-            templateContent = evt.target.result; //ArrayBuffer
-            status.textContent = `✓ Loaded template: ${file.name}`;
-            status.style.color = "#065f46";
+            templateContent = evt.target.result;
+            $("templateStatus").textContent = `✓ Loaded template: ${file.name}`;
+            $("templateStatus").style.color = "#065f46";
             $("generateBtn").disabled = false;
           };
           reader.onerror = () => {
-            status.textContent = "✗ Error reading file.";
-            status.style.color = "#b45309";
-            templateContent = null;
-            $("generateBtn").disabled = true;
+            $("templateStatus").textContent = "✗ Error reading file.";
+            $("templateStatus").style.color = "#b45309";
           };
             reader.readAsArrayBuffer(file);
         });
 
-        $("generateBtn").addEventListener("click", async () => {
-          const status = $("status");
+        $("generateBtn").addEventListener("click", () => {
           if (!templateContent) {
-            status.textContent = "Please upload a .docx template first.";
-            status.style.color = "#b45309";
+            $("status").textContent = "Please upload a template first.";
+            $("status").style.color = "#b45309";
             return;
           }
-
-          const respondingParty = $("respondingParty").value;
+          respondingParty = $("respondingParty").value;
 
           const data = {
             fileNumber: $("fileNumber").value.trim(),
@@ -455,41 +415,36 @@
             parishUpper: $("parish").value ? $("parish").value.toUpperCase() : "",
             district: $("parish").value && parishData[$("parish").value] ? parishData[$("parish").value].district : "",
             daName: $("daName").value.trim(),
-            
             daResponse: getRadio("daResponse"),
             daNoOpposition: getRadio("daResponse") === "no-opposition",
             daOpposition: getRadio("daResponse") === "opposition",
             daObjectionText: $("daObjectionText").value.trim(),
-            
             bureauResponse: getRadio("bureauResponse"),
             bureauNoOpposition: getRadio("bureauResponse") === "no-opposition",
             bureauOpposition: getRadio("bureauResponse") === "opposition",
             bureauNoOppositionText: $("bureauNoOppositionText").value.trim(),
             bureauObjectionText: $("bureauObjectionText").value.trim(),
-            
             agencyName: $("agencyName").value.trim(),
             agencyResponse: getRadio("agencyResponse"),
             agencyNoOpposition: getRadio("agencyResponse") === "no-opposition",
             agencyOpposition: getRadio("agencyResponse") === "opposition",
             agencyNoOppositionText: $("agencyNoOppositionText").value.trim(),
             agencyObjectionText: $("agencyObjectionText").value.trim(),
-            
             arrestingAgency: $("arrestingAgency").value.trim(),
             defenseAttorney: $("defenseAttorney").value.trim(),
             defenseAddress: $("defenseAddress").value.trim(),
-            serviceDate: $("serviceDateDisplay").textContent,
-
-            respondingParty: respondingParty,
+            serviceDate: $("serviceDate").value.trim()
           };
 
           //Control which sections show
-          data.showDA = true;
-          data.showBureau = true;
-          data.showAgency = true;
-          
-          data.defendantNameUpper = data.defendantName ? data.defendantName.toUpperCase() : "";
+          showDA: respondingParty === "da";
+          showBureau: respondingParty === "bureau";
+          showAgency: respondingParty === "agency";
+          showOR: respondingParty === "da" || respondingParty === "bureau";
+          showOR2: respondingParty === "bureau" || respondingParty === "agency";
 
-          // Validate required fields
+          const status = $("status");
+          status.textContent = "";
           const missing = [];
           if (!data.defendantName) missing.push("Defendant Name");
           if (!data.parish) missing.push("Parish");
@@ -505,10 +460,7 @@
           let showNoOpp = false;
           let noOpText = "The respondent does not oppose this motion for expungement.";
 
-          if (respondingParty === "da" && data.daNoOpposition) {
-            showNoOpp = true;
-            if (data.daNoOppositionText) noOpText = data.daNoOppositionText;
-          }
+          if (respondingParty === "da" && data.daNoOpposition) showNoOpp = true;
           if (respondingParty === "bureau" && data.bureauNoOpposition) { 
             showNoOpp = true;
             if (data.bureauNoOppositionText) noOpText = data.bureauNoOppositionText;
@@ -528,7 +480,7 @@
             if (respondingParty === "agency" && data.agencyOpposition) responseStatus = "Opposition";
 
           try {
-            const blob = await generateDocx(templateContent, data);
+            const blob = generateDocx(templateContent, data);
             
             const safeFile = (data.fileNumber || "NoFile").replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
             const safeLog = (data.logNumber || "NoLog").replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
