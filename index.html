@@ -311,7 +311,7 @@
 
     function generateDocx(templateArrayBuffer, data) {
       try {
-        const zip = await JSZip.loadAsync(templateArrayBuffer);
+        const zip = JSZip.loadAsync(templateArrayBuffer);
         const doc = new window.docxtemplater(zip, {
           paragraphLoop: true,
           linebreaks: true,
