@@ -248,7 +248,10 @@
                     
                     const zip = new PizZipLib(templateArrayBuffer);
 
-                    const Docxtemplater = window.docxtemplater || window.Docxtemplater;
+                    const Docxtemplater = 
+                    window.docxtemplater?.Docxtemplater ||
+                    window.docxtemplater ||
+                    window.Docxtemplater;
                     if (!Docxtemplater) {
                         throw new Error("Docxtemplater library not found.");
                     }
