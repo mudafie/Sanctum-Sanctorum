@@ -211,7 +211,7 @@
         "DeSoto": { district: "42ND", da: "Charles B. Adams" },
         "East Baton Rouge": { district: "19TH", da: "Hillar C. Moore, III" },
         "East Carroll": { district: "6TH", da: "James E. Paxton" },
-        "East Feliciana": { district: "20TH", da: "Samuel C'Aquilla" },
+        "East Feliciana": { district: "20TH", da: "Samuel D'Aquilla" },
         "Evangeline": { district: "13TH", da: "Trent Brignac" },
         "Franklin": { district: "5TH", da: "Penny Douciere" },
         "Grant": { district: "35TH", da: "James \"Jay\" P. Lemoine" },
@@ -255,7 +255,7 @@
         "Webster": { district: "26TH", da: "John \"Schuyler\" Marvin" },
         "West Baton Rouge": { district: "18TH", da: "Antonio M. Clayton" },
         "West Carroll": { district: "5TH", da: "Penny Douciere" },
-        "West Feliciana": { district: "20TH", da: "Samuel C'Aquilla" },
+        "West Feliciana": { district: "20TH", da: "Samuel D'Aquilla" },
         "Winn": { district: "8TH", da: "R. Chris Nevils" }
     }
 
@@ -300,7 +300,10 @@
         const bureau = $("section-bureau");
         const agency = $("section-agency");
 
-        if (!selector || !da || !bureau || !agency) return;
+        if (!selector) return console.error("Missing element: #respondingParty");
+        if (!da) return console.error("Missing element: #section-da");
+        if (!bureau) return console.error("Missing element: #section-bureau");
+        if (!agency) return console.error("Missing element: #section-agency");
 
         const selected = selector.value;
 
@@ -311,20 +314,24 @@
 
     function generateDocx(templateArrayBuffer, data) {
       try {
-        const zip = JSZip.loadAsync(templateArrayBuffer);
-        const doc = new window.docxtemplater(zip, {
+        const zip = new PizZip(templateArrayBuffer);
+
+        const Docxtemplater = window.docxtemplater || window.Docxtemplater;
+        if (!Docxtemplater) {
+          throw new Error("Docxtemplater library not found.");
+        }
+
+        const doc = new Docxtemplater(zip, {
           paragraphLoop: true,
           linebreaks: true,
         });
 
         doc.render(data);
 
-        const blob = doc.getZip().generate({
+        return doc.getZip().generate({
           type: "blob",
           mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
         });
-
-        return blob;
       } catch (error) {
         console.error("Error generating docx:", error);
         throw error;
@@ -388,39 +395,52 @@
         });
 
         //Template upload handler
+        let templateContent = null;
+        
         $("templateFile").addEventListener("change", (e) => {
-          const file = event.target.files[0];
+          const file = e.target.files && e.target.files[0];
           const status = $("templateStatus");
           if (!file) {
             status.textContent = "No file selected.";
+            status.style.color = "#b45309";
+            templateContent = null;
+            $("generateBtn").disabled = true;
             return;
           }
-          if (file.type !== "application/vnd.openxmlformats-officedocument.wordprocessingml.document") {
+          //Extension checker
+          if (!file.name.toLowerCase().endsWith(".docx")) {
             status.textContent = "Please upload a valid .docx file.";
+            status.style.color = "#b45309";
+            templateContent = null;
+            $("generateBtn").disabled = true;
             return;
           }
 
           const reader = new FileReader();
           reader.onload = (evt) => {
-            templateContent = evt.target.result;
-            $("templateStatus").textContent = `✓ Loaded template: ${file.name}`;
-            $("templateStatus").style.color = "#065f46";
+            templateContent = evt.target.result; //ArrayBuffer
+            status.textContent = `✓ Loaded template: ${file.name}`;
+            status.style.color = "#065f46";
             $("generateBtn").disabled = false;
           };
           reader.onerror = () => {
-            $("templateStatus").textContent = "✗ Error reading file.";
-            $("templateStatus").style.color = "#b45309";
+            status.textContent = "✗ Error reading file.";
+            status.style.color = "#b45309";
+            templateContent = null;
+            $("generateBtn").disabled = true;
           };
             reader.readAsArrayBuffer(file);
         });
 
         $("generateBtn").addEventListener("click", async () => {
+          const status = $("status");
           if (!templateContent) {
-            $("status").textContent = "Please upload a template first.";
-            $("status").style.color = "#b45309";
+            status.textContent = "Please upload a .docx template first.";
+            status.style.color = "#b45309";
             return;
           }
-          respondingParty = $("respondingParty").value;
+
+          const respondingParty = $("respondingParty").value;
 
           const data = {
             fileNumber: $("fileNumber").value.trim(),
@@ -432,36 +452,41 @@
             parishUpper: $("parish").value ? $("parish").value.toUpperCase() : "",
             district: $("parish").value && parishData[$("parish").value] ? parishData[$("parish").value].district : "",
             daName: $("daName").value.trim(),
+            
             daResponse: getRadio("daResponse"),
             daNoOpposition: getRadio("daResponse") === "no-opposition",
             daOpposition: getRadio("daResponse") === "opposition",
             daObjectionText: $("daObjectionText").value.trim(),
+            
             bureauResponse: getRadio("bureauResponse"),
             bureauNoOpposition: getRadio("bureauResponse") === "no-opposition",
             bureauOpposition: getRadio("bureauResponse") === "opposition",
             bureauNoOppositionText: $("bureauNoOppositionText").value.trim(),
             bureauObjectionText: $("bureauObjectionText").value.trim(),
+            
             agencyName: $("agencyName").value.trim(),
             agencyResponse: getRadio("agencyResponse"),
             agencyNoOpposition: getRadio("agencyResponse") === "no-opposition",
             agencyOpposition: getRadio("agencyResponse") === "opposition",
             agencyNoOppositionText: $("agencyNoOppositionText").value.trim(),
             agencyObjectionText: $("agencyObjectionText").value.trim(),
+            
             arrestingAgency: $("arrestingAgency").value.trim(),
             defenseAttorney: $("defenseAttorney").value.trim(),
             defenseAddress: $("defenseAddress").value.trim(),
             serviceDate: $("serviceDateDisplay").textContent,
+
+            respondingParty: respondingParty,
           };
 
           //Control which sections show
-          showDA: respondingParty === "da";
-          showBureau: respondingParty === "bureau";
-          showAgency: respondingParty === "agency";
-          showOR: respondingParty === "da" || respondingParty === "bureau";
-          showOR2: respondingParty === "bureau" || respondingParty === "agency";
+          data.showDA = true;
+          data.showBureau = true;
+          data.showAgency = true;
+          
+          data.defendantNameUpper = data.defendantName ? data.defendantName.toUpperCase() : "";
 
-          const status = $("status");
-          status.textContent = "";
+          // Validate required fields
           const missing = [];
           if (!data.defendantName) missing.push("Defendant Name");
           if (!data.parish) missing.push("Parish");
@@ -477,7 +502,10 @@
           let showNoOpp = false;
           let noOpText = "The respondent does not oppose this motion for expungement.";
 
-          if (respondingParty === "da" && data.daNoOpposition) showNoOpp = true;
+          if (respondingParty === "da" && data.daNoOpposition) {
+            showNoOpp = true;
+            if (data.daObjectionText) noOpText = data.daObjectionText;
+          }
           if (respondingParty === "bureau" && data.bureauNoOpposition) { 
             showNoOpp = true;
             if (data.bureauNoOppositionText) noOpText = data.bureauNoOppositionText;
