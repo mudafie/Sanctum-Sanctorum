@@ -261,7 +261,20 @@
                         linebreaks: true,
                     });
 
-                    doc.render(data);
+                    try {
+                        doc.render(data);
+                    } catch (e) {
+                        console.error("DOCX RENDER FAILED: ", e);
+
+                        if (e.properties?.errors?.length) {
+                            e.properties.errors.forEach((err, i) => {
+                            console.error(`Render error #${i + 1}:`, err.properties?.explanation || err);
+                            });
+                        }
+                        throw e;
+                    }
+
+                    console.log("Rendered preview:", doc.getFullText().slice(0, 200));
 
                     return doc.getZip().generate({
                         type: "blob",
