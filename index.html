@@ -261,12 +261,13 @@
                         linebreaks: true,
                     });
 
+                    doc.render(data);
+
                     return doc.getZip().generate({
                         type: "blob",
                         mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
                     });
 
-                    doc.render(data);
                 } catch (e) {
                     console.error("DOCXTEMPLATER RENDER ERROR:", e);
 
