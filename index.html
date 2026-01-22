@@ -118,7 +118,15 @@
                         <input id="arrestingAgency" name="arrestingAgency" type="text" placeholder="e.g., Louisiana State Police" />
                     </div>
                     <div>
-                        <label for="defenseAttorney">Defense Attorney/Defendant Name</label>
+                        <label for="defenseRecipient">Defense Recipient</label>
+                        <select id="defenseRecipient" name="defenseRecipient">
+                            <option value="counsel" selected> Defendant, through counsel of record</option>
+                            <option value="defendant">Defendant</option>
+                        </select>
+                        <div class="tiny">Select who is being served on the defense side</div>
+                    </div>
+                    <div>
+                        <label for="defenseAttorney">Defense Name</label>
                         <input id="defenseAttorney" name="defenseAttorney" type="text" placeholder="e.g., Barb Dwyer" />
                     </div>
                     <div>
@@ -393,6 +401,24 @@
                         respondingParty: respondingParty,
                     };
 
+                    const defenseRecipient = $("defenseRecipient").value; //"counsel" or "defendant"
+
+                    data.defenseRecipient = defenseRecipient;
+                    data.defenseServiceLabel = defenseRecipient === "defendant" ? "Defendant" : "Defendant, through counsel of record";
+
+
+                    //This is the printable line in the certificate/service section
+                    const defenseName = ($("defenseAttoreny").value || "").trim();
+                    const defenseAddr = ($("defenseAddress").value || "").trim();
+
+                    if (defenseRecipient === "defendant") {
+                        //If pro se, it reads cleaner as "Defendant: [Name], [Address]"
+                        data.defenseServiceText = defenseAddr ? `${defenseName}, ${defenseAddr}` : {defenseName};
+                    } else {
+                        //Counsel, same format already used
+                        data.defenseServiceText = defenseAddr ? `${defenseName}, ${defenseAddr}` : {defenseName};
+                    }
+
                 //Control which sections show
                 data.showDA = true;
                 data.showBureau = true;
@@ -443,11 +469,13 @@
                     const safeDocket = data.docketNumber.replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
                     const safeParish = data.parish.replace(/\s+/g, "_").replace(/[^\w\-]/g, "");
                     
-                    const filename = `${safeFile} ${safeLog} ${safeName} ${safeDocket} ${safeParish} ${responseStatus}.docx`;
+                    const filename = `"Affidavit of Response - " ${safeFile} ${safeLog} ${safeName} ${safeDocket} ${safeParish} ${responseStatus}.docx`;
 
                     saveAs(blob, filename);
                     status.textContent = "Generated and downloaded: " + filename;
                     status.style.color = "#065f46";
+
+                    resetForm();
                 } catch (err) {
                     status.textContent = "Error generating document.";
                     status.style.color = "#b45309";
@@ -455,6 +483,33 @@
                 }
             });
         });
+
+        function resetForm() {
+            //Clear text inputs + txtareas (but NOT file input)
+            document.querySelectorAll('input[type="text"], textarea'). forEach(el => {
+                el.value = "";
+            });
+
+            //Reset parish dropdown
+            $("parish").value = "";
+            $("districtHint").style.display = "none";
+
+            //Reset Bureau radios to "No Opposition"
+            const noOpp = document.querySelector('input[name="bureauResponse"][value="no-opposition"]');
+
+            //Reset Bureau default text
+            $("bureauNoOppositionText").value = "The Bureau does not oppose this motion for expungement.";
+            $("bureauObjectionText").value = "";
+
+            //Reset defense recipient selector
+            const dr = $("defenseRecipient");
+            if (dr) dr.value = "counsel";
+
+            //Reset service date to today
+            const today = new Date();
+            $("serviceDatePicker").value = today.toISOString().split("T")[0];
+            $("serviceDateDisplay").textContent = formatServiceDate(today);
+        }
         </script>
     </body>
 </html>
