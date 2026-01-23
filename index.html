@@ -135,6 +135,13 @@
                         <input id="bureauNoOppositionText" name="bureauNoOppositionText" type="text" value="The Bureau does not oppose this motion for expungement." />
                     </div>
                     <div>
+                        <label for="bureauObjections">Bureau Objections</label>
+                        <select id="bureauObjections">
+                            <option value="">Select an Objection (optional)</option>
+                        </select>
+                        <div class="tiny">Selecting one will auto-fill the objection text box. You can still edit it.</div>
+                    </div>
+                    <div>
                         <label for="bureauObjectionText">Bureau Objection Text (only used if opposing)</label>
                         <textarea id="bureauObjectionText" name="bureauObjectionText" placeholder="Enter the complete objection text here..."></textarea>
                     </div>
@@ -396,6 +403,36 @@
                         $("generateBtn").disabled = true;
                     };
                     reader.readAsArrayBuffer(file);
+                });
+
+                let objectionLibrary = [];
+
+                fetch("./objections.json")
+                    .then(res => res.json)
+                    .then(data => {
+                        objectionLibrary = data;
+
+                        const sel = $("bureauObjections");
+                        data.forEach(item => {
+                            const opt = document.createElement("option");
+                            opt.value = item.id;
+                            opt.textContent = item.label;
+                            sel.appendChild(opt);
+                        })
+                    })
+                    .catch(err => {
+                        console.error("Could not load objections.json", err);
+                    });
+
+                $("bureauObjections").addEventListener("change", () => {
+                    const chosenId = $("bureauObjections").value;
+                    const found = objectionLibrary.find(x => x.id === chosenId);
+
+                    if (found) {
+                        $("bureauObjectionText").value = found.text;
+                        //auto-swithc radio to "opposition" since an objection was picked
+                        document.quesrySelector('input[name="bureauResponse"][value="opposition"]').checked = true;
+                    }
                 });
 
                 $("generateBtn").addEventListener("click", async () => {
