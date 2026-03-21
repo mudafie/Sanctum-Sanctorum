@@ -36,9 +36,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
         list.innerHTML = "";
 
-        tasks.forEach(task => {
+        tasks.forEach((task, index) => {
             const li = list.appendChild(document.createElement("li"));
-            li.textContent = task;
+            const box = li.appendChild(document.createElement("input"));
+            const taskLabel = li.appendChild(document.createElement("span")); 
+            box.type = "checkbox";
+            box.checked = task.done;
+            taskLabel.textContent = task.text;
+
+            if (task.done) {
+                li.classList.add("done");
+            }
+
+            box.addEventListener("change", () =>{
+                const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+                tasks[index].done = !tasks[index].done;
+                saveTasks(tasks);
+                renderTasks();
+            })
         })
     }
 
@@ -50,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function todo() {
         const item = document.getElementById("item");
-        let task = item.value;
+        let task = { text: item.value, done: false };
 
         const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
@@ -79,7 +94,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const lat = res.results[0].latitude;
             const lon = res.results[0].longitude;
-            const weather = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=fahrenheit`;
+            const weather = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&hourly=temperature_2m,precipitation_probability&temperature_unit=fahrenheit&timezone=auto`;
 
             const ans = await fetch(weather);
             if (!ans.ok) {
@@ -94,6 +109,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
+    const filter = document.getElementById("filter");
+
+    function clearCompleted() {
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        const remain = tasks.filter(task => !task.done);
+        saveTasks(remain);
+        renderTasks();
+    }
+
     clock();
     setInterval(clock, 1000);
 
@@ -103,4 +127,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
     todo_list.addEventListener("click", todo);
     place.addEventListener("click", fetchWeather);
+    filter.addEventListener("click", clearCompleted);
 });
