@@ -106,6 +106,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const out = await ans.json();
             console.log(out);
+
+            const currentHour = new Date().getHours();
+
+            const temp = out.current_weather.temperature;
+            const high = out.daily.temperature_2m_max[0];
+            const low = out.daily.temperature_2m_min[0];
+            const precip = out.daily.precipitation_probability_max[0];
+            const hrTemp = out.hourly.temperature_2m.slice(currentHour, currentHour + 6);
+            const hrPrecip = out.hourly.precipitation_probability.slice(currentHour, currentHour + 6);
+            const hrTime = out.hourly.time.slice(currentHour, currentHour + 6);
+            const weatherData = { temp, high, low, precip, hrTemp, hrPrecip, hrTime };
+            console.log(weatherData);
             
         } catch (e) {
             console.error(e.message);
