@@ -83,6 +83,8 @@ document.addEventListener("DOMContentLoaded", () => {
         let city = location.value;
         const loc = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`;
 
+        console.log(loc);
+
         try {
             const resp = await fetch(loc);
             if (!resp.ok) {
@@ -95,6 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const lat = res.results[0].latitude;
             const lon = res.results[0].longitude;
             const weather = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&hourly=temperature_2m,precipitation_probability&temperature_unit=fahrenheit&timezone=auto`;
+            console.log(weather);
 
             const ans = await fetch(weather);
             if (!ans.ok) {
