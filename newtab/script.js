@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
     async function fetchWeather() {
         const location = document.getElementById("location");
         let city = location.value;
-        const loc = `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`;
+        const loc = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
 
         console.log(loc);
 
