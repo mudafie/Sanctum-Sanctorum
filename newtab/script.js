@@ -282,6 +282,62 @@ document.addEventListener("DOMContentLoaded", () => {
         renderTasks();
     }
 
+    let isRunning = false;
+    let timeLeft = 0;
+    let isBreak = false;
+    let timeInterval = null;
+
+    function updateDisplay() {
+        let m = String(Math.floor(timeLeft / 60)).padStart(2, "0");
+        let s = String(timeLeft % 60).padStart(2, "0");
+
+        const timer = document.getElementById("timer");
+        timer.textContent = m + ":" + s;
+    }
+
+    function startTimer() {
+        const work = document.getElementById("work");
+        timeLeft = parseInt(work.value) * 60;
+        const tBtn = document.getElementById("timerBtn");
+        isRunning = true;
+        tBtn.textContent = "Pause"
+        
+        function startInterval() {
+            --timeLeft;
+            updateDisplay();
+        };
+
+        timeInterval = setInterval(startInterval, 1000);
+    }
+
+    function pauseTimer() {
+        const tBtn = document.getElementById("timerBtn");
+        isRunning = false;
+        clearInterval(timeInterval);
+        tBtn.textContent = "Start";
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval);
+        isRunning = false;
+        timeLeft = 0;
+        isBreak = false;
+        timeInterval = null;
+        updateDisplay();
+    }
+
+    const timerBtn = document.getElementById("timerBtn");
+    timerBtn.addEventListener("click", () => {
+        if (isRunning === false) {
+            startTimer();
+        } else {
+            pauseTimer();
+        }
+    });
+
+    const resetBtn = document.getElementById("resetBtn");
+    resetBtn.addEventListener("click", resetTimer);
+
     clock();
     setInterval(clock, 1000);
 
