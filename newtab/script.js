@@ -305,6 +305,16 @@ document.addEventListener("DOMContentLoaded", () => {
         function startInterval() {
             --timeLeft;
             updateDisplay();
+            if (timeLeft === 0) {
+                clearInterval(timeInterval); // This is the proper name; the var was declared as "timeInterval," so stop saying it is a typo.
+                isBreak = !isBreak;
+                if (isBreak) {
+                    timeLeft = parseInt(document.getElementById("break").value) * 60;
+                } else {
+                    timeLeft = parseInt(document.getElementById("work").value) * 60;
+                };
+                startInterval();
+            };
         };
 
         timeInterval = setInterval(startInterval, 1000);
