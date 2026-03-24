@@ -78,6 +78,109 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const place = document.getElementById("place");
 
+    const wc = {
+        "0": "clear skies",
+        "1": "mainly clear",
+        "2": "partly cloudy",
+        "3": "overcast",
+        "4": "visibility reduced by smoke",
+        "5": "haze",
+        "6": "widespread dust",
+        "7": "dust or sand raised by wind",
+        "8": "dust whirls",
+        "9": "duststorm or sandstorm",
+        "10": "mist",
+        "11": "shallow fog patches",
+        "12": "continuous shallow fog",
+        "13": "lightning visible, no thunder",
+        "14": "precipitation not reaching ground",
+        "15": "distant precipitation",
+        "16": "nearby precipitation",
+        "17": "thunderstorm, no precipitation",
+        "18": "squalls",
+        "19": "funnel cloud",
+        "20": "drizzle or snow grains (past hour)",
+        "21": "rain (past hour)",
+        "22": "snow (past hour)",
+        "23": "rain and snow (past hour)",
+        "24": "freezing drizzle or rain (past hour)",
+        "25": "rain showers (past hour)",
+        "26": "snow showers (past hour)",
+        "27": "hail showers (past hour)",
+        "28": "fog or ice fog (past hour)",
+        "29": "thunderstorm (past hour)",
+        "30": "slight duststorm, decreasing",
+        "31": "slight duststorm, no change",
+        "32": "slight duststorm, increasing",
+        "33": "severe duststorm, decreasing",
+        "34": "severe duststorm, no change",
+        "35": "severe duststorm, increasing",
+        "36": "slight low drifting snow",
+        "37": "heavy low drifting snow",
+        "38": "slight high blowing snow",
+        "39": "heavy high blowing snow",
+        "40": "fog at a distance",
+        "41": "fog in patches",
+        "42": "fog, thinning, sky visible",
+        "43": "fog, thinning, sky invisible",
+        "44": "fog, no change, sky visible",
+        "45": "fog, no change, sky invisible",
+        "46": "fog, thickening, sky visible",
+        "47": "fog, thickening, sky invisible",
+        "48": "freezing fog, sky visible",
+        "49": "freezing fog, sky invisible",
+        "50": "slight intermittent drizzle",
+        "51": "slight continuous drizzle",
+        "52": "moderate intermittent drizzle",
+        "53": "moderate continuous drizzle",
+        "54": "heavy intermittent drizzle",
+        "55": "heavy continuous drizzle",
+        "56": "slight freezing drizzle",
+        "57": "moderate or heavy freezing drizzle",
+        "58": "slight drizzle and rain",
+        "59": "moderate or heavy drizzle and rain",
+        "60": "slight intermittent rain",
+        "61": "slight continuous rain",
+        "62": "moderate intermittent rain",
+        "63": "moderate continuous rain",
+        "64": "heavy intermittent rain",
+        "65": "heavy continuous rain",
+        "66": "slight freezing rain",
+        "67": "moderate or heavy freezing rain",
+        "68": "slight rain and snow",
+        "69": "moderate or heavy rain and snow",
+        "70": "slight intermittent snowfall",
+        "71": "slight continuous snowfall",
+        "72": "moderate intermittent snowfall",
+        "73": "moderate continuous snowfall",
+        "74": "heavy intermittent snowfall",
+        "75": "heavy continuous snowfall",
+        "76": "diamond dust",
+        "77": "snow grains",
+        "78": "snow crystals",
+        "79": "ice pellets",
+        "80": "slight rain showers",
+        "81": "moderate or heavy rain showers",
+        "82": "violent rain showers",
+        "83": "slight rain and snow showers",
+        "84": "moderate or heavy rain and snow showers",
+        "85": "slight snow showers",
+        "86": "moderate or heavy snow showers",
+        "87": "slight snow pellet showers",
+        "88": "moderate or heavy snow pellet showers",
+        "89": "slight hail showers",
+        "90": "moderate or heavy hail showers",
+        "91": "slight rain, recent thunderstorm",
+        "92": "moderate or heavy rain, recent thunderstorm",
+        "93": "slight snow or mixed, recent thunderstorm",
+        "94": "moderate or heavy snow or mixed, recent thunderstorm",
+        "95": "slight or moderate thunderstorm with rain or snow",
+        "96": "slight or moderate thunderstorm with hail",
+        "97": "heavy thunderstorm with rain or snow",
+        "98": "thunderstorm with duststorm",
+        "99": "heavy thunderstorm with hail"
+    };
+
     async function fetchWeather() {
         const location = document.getElementById("location");
         let city = location.value;
@@ -104,24 +207,57 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(`Response status: ${ans.status}`);
             }
 
-            const out = await ans.json();
-            console.log(out);
-
-            const currentHour = new Date().getHours();
-
-            const temp = out.current_weather.temperature;
-            const high = out.daily.temperature_2m_max[0];
-            const low = out.daily.temperature_2m_min[0];
-            const precip = out.daily.precipitation_probability_max[0];
-            const hrTemp = out.hourly.temperature_2m.slice(currentHour, currentHour + 6);
-            const hrPrecip = out.hourly.precipitation_probability.slice(currentHour, currentHour + 6);
-            const hrTime = out.hourly.time.slice(currentHour, currentHour + 6);
-            const weatherData = { temp, high, low, precip, hrTemp, hrPrecip, hrTime };
-            console.log(weatherData);
-            
+            const data = await ans.json();          
         } catch (e) {
             console.error(e.message);
         }
+    };
+
+    function renderWeather(data) {
+        const currentHour = new Date().getHours();
+
+        const temp = data.current_weather.temperature;
+        const cond = data.current_weather.weathercode;
+        const c = wc[cond];
+        const high = data.daily.temperature_2m_max[0];
+        const low = data.daily.temperature_2m_min[0];
+        const precip = data.daily.precipitation_probability_max[0];
+        const hrTemp = data.hourly.temperature_2m.slice(currentHour, currentHour + 6);
+        const hrPrecip = data.hourly.precipitation_probability.slice(currentHour, currentHour + 6);
+        const hrTime = data.hourly.time.slice(currentHour, currentHour + 6);
+        const weatherData = { temp, c, high, low, precip, hrTemp, hrPrecip, hrTime };
+        console.log(weatherData);
+
+        let current = `Currently ${temp} degrees and ${c}.`;
+        let daily = `Daytime high of ${high} with a nighttime low of ${low}. Chance of rain ${precip}%.`;
+
+        const weatherCurrent = document.getElementById("weather-current");
+        const weatherDaily = document.getElementById("weather-daily");
+
+        weatherCurrent.textContent = current;
+        weatherDaily.textContent = daily;
+
+        hrTime.forEach((time, index) => {
+            const time = formatHour(time);
+        });
+    };
+
+    function formatHour(timeString) {
+        const parts = timeString.split("T");
+        const time = parts[1];
+        const strHr = time.split(":");
+        const hrStr = strHr[0];
+        const hr = parseInt(hrStr);
+
+        if (hr === 0) {
+            return "12 AM";
+        } else if (hr > 0 && hr < 12) {
+            return hr + " AM";
+        } else if (hr === 12) {
+            return "12 PM";
+        } else {
+            return (hr - 12) + " PM";
+        };
     };
 
     const filter = document.getElementById("filter");
