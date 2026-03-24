@@ -301,6 +301,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const tBtn = document.getElementById("timerBtn");
         isRunning = true;
         tBtn.textContent = "Pause"
+        timeInterval = setInterval(startInterval, 1000)
         
         function startInterval() {
             --timeLeft;
@@ -313,7 +314,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 } else {
                     timeLeft = parseInt(document.getElementById("work").value) * 60;
                 };
-                startInterval();
+                timeInterval = setInterval(startInterval, 1000);
             };
         };
 
