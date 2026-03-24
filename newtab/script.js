@@ -306,7 +306,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function startInterval() {
-        console.log("tick", timeLeft, isBreak);
         --timeLeft;
         updateDisplay();
         if (timeLeft === 0) {
