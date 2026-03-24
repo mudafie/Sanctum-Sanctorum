@@ -207,10 +207,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 throw new Error(`Response status: ${ans.status}`);
             }
 
-            const data = await ans.json();          
+            const data = await ans.json();
+            renderWeather(data);
+                  
         } catch (e) {
             console.error(e.message);
         }
+
     };
 
     function renderWeather(data) {
@@ -237,8 +240,18 @@ document.addEventListener("DOMContentLoaded", () => {
         weatherCurrent.textContent = current;
         weatherDaily.textContent = daily;
 
+        const wHr = document.getElementById("weather-hourly");
+
         hrTime.forEach((time, index) => {
-            const time = formatHour(time);
+            const fTime = formatHour(time);
+            const hr = wHr.appendChild(document.createElement("div"));
+            const t = hr.appendChild(document.createElement("span"));
+            const temp = hr.appendChild(document.createElement("span"));
+            const precip = hr.appendChild(document.createElement("span"));
+
+            t.textContent = fTime;
+            temp.textContent = hrTemp[index];
+            precip.textContent = hrPrecip[index];
         });
     };
 
