@@ -328,7 +328,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function resetTimer() {
-        clearInterval(timerInterval);
+        clearInterval(timeInterval);
         isRunning = false;
         timeLeft = 0;
         isBreak = false;
@@ -348,6 +348,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const resetBtn = document.getElementById("resetBtn");
     resetBtn.addEventListener("click", resetTimer);
 
+    const notepad = document.getElementById("notes");
+    
+    function saveNotes(note) {
+        localStorage.setItem("notes", note);
+    };
+
+    function loadNotes() {
+        const notes = localStorage.getItem("notes");
+        notepad.value = notes;
+    };
+
     clock();
     setInterval(clock, 1000);
 
@@ -358,4 +369,5 @@ document.addEventListener("DOMContentLoaded", () => {
     todo_list.addEventListener("click", todo);
     place.addEventListener("click", fetchWeather);
     filter.addEventListener("click", clearCompleted);
+    notepad.addEventListener("input", () => saveNotes(notepad.value));
 });
