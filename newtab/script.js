@@ -1,83 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
-    function clock() {
-        const date = new Date();
-        const hour = String(date.getHours()).padStart(2, "0");
-        const minute = String(date.getMinutes()).padStart(2, "0");
-        const second = String(date.getSeconds()).padStart(2, "0");
-
-        const time = `${hour}:${minute}:${second}`;
-        const t = document.getElementById("clock");
-
-        t.textContent = time;
-    };
-            
-    function currentDate() {
-        const now = new Date();
-        const day = now.getDay();
-        const month = now.getMonth();
-        const dd = now.getDate();
-        const y = now.getFullYear();
-
-        const dNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-        const mNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
-        const d = dNames[day];
-        const m = mNames[month];
-
-        const today = `${d} · ${m} ${dd}, ${y}`;
-        const t = document.getElementById("date");
-
-        t.textContent = today;
-    }
-
-    function renderTasks() {       
-        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-        const list = document.getElementById("todo");
-
-        list.innerHTML = "";
-
-        tasks.forEach((task, index) => {
-            const li = list.appendChild(document.createElement("li"));
-            const box = li.appendChild(document.createElement("input"));
-            const taskLabel = li.appendChild(document.createElement("span")); 
-            box.type = "checkbox";
-            box.checked = task.done;
-            taskLabel.textContent = task.text;
-
-            if (task.done) {
-                li.classList.add("done");
-            }
-
-            box.addEventListener("change", () =>{
-                const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-                tasks[index].done = !tasks[index].done;
-                saveTasks(tasks);
-                renderTasks();
-            })
-        })
-    }
-
-    function saveTasks(task) {
-        localStorage.setItem("tasks", JSON.stringify(task));
-    }
-
-    const todo_list = document.getElementById("btn");
-
-    function todo() {
-        const item = document.getElementById("item");
-        let task = { text: item.value, done: false };
-
-        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-
-        tasks.push(task);
-        saveTasks(tasks);
-        renderTasks();
-        
-        document.getElementById("item").value = "";
-    }
-
+    const addBtn = document.getElementById("addBtn");
     const place = document.getElementById("place");
+    const filter = document.getElementById("filter");
+    const timerBtn = document.getElementById("timerBtn");
+    const resetBtn = document.getElementById("resetBtn");
+    const notepad = document.getElementById("notes");
 
+    let isRunning = false;
+    let timeLeft = 0;
+    let isBreak = false;
+    let timeInterval = null;
+
+    const dNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const mNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const wc = {
         "0": "clear skies",
         "1": "mainly clear",
@@ -181,12 +116,82 @@ document.addEventListener("DOMContentLoaded", () => {
         "99": "heavy thunderstorm with hail"
     };
 
+    function clock() {
+        const date = new Date();
+        const hour = String(date.getHours()).padStart(2, "0");
+        const minute = String(date.getMinutes()).padStart(2, "0");
+        const second = String(date.getSeconds()).padStart(2, "0");
+
+        const time = `${hour}:${minute}:${second}`;
+        const clockEl = document.getElementById("clock");
+
+        clockEl.textContent = time;
+    };
+
+    function currentDate() {
+        const now = new Date();
+        const day = now.getDay();
+        const month = now.getMonth();
+        const dd = now.getDate();
+        const y = now.getFullYear();
+
+        const d = dNames[day];
+        const m = mNames[month];
+
+        const today = `${d} · ${m} ${dd}, ${y}`;
+        const t = document.getElementById("date");
+
+        t.textContent = today;
+    }
+
+    function renderTasks() {       
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        const list = document.getElementById("todo");
+
+        list.innerHTML = "";
+
+        tasks.forEach((task, index) => {
+            const li = list.appendChild(document.createElement("li"));
+            const box = li.appendChild(document.createElement("input"));
+            const taskLabel = li.appendChild(document.createElement("span")); 
+            box.type = "checkbox";
+            box.checked = task.done;
+            taskLabel.textContent = task.text;
+
+            if (task.done) {
+                li.classList.add("done");
+            }
+
+            box.addEventListener("change", () =>{
+                const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+                tasks[index].done = !tasks[index].done;
+                saveTasks(tasks);
+                renderTasks();
+            })
+        })
+    }
+
+    function saveTasks(task) {
+        localStorage.setItem("tasks", JSON.stringify(task));
+    }
+
+    function todo() {
+        const item = document.getElementById("item");
+        let task = { text: item.value, done: false };
+
+        const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+        tasks.push(task);
+        saveTasks(tasks);
+        renderTasks();
+        
+        document.getElementById("item").value = "";
+    }
+
     async function fetchWeather() {
         const location = document.getElementById("location");
         let city = location.value;
         const loc = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
-
-        console.log(loc);
 
         try {
             const resp = await fetch(loc);
@@ -195,12 +200,10 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const res = await resp.json();
-            console.log(res);
 
             const lat = res.results[0].latitude;
             const lon = res.results[0].longitude;
             const weather = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max&hourly=temperature_2m,precipitation_probability&temperature_unit=fahrenheit&timezone=auto`;
-            console.log(weather);
 
             const ans = await fetch(weather);
             if (!ans.ok) {
@@ -228,8 +231,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const hrTemp = data.hourly.temperature_2m.slice(currentHour, currentHour + 6);
         const hrPrecip = data.hourly.precipitation_probability.slice(currentHour, currentHour + 6);
         const hrTime = data.hourly.time.slice(currentHour, currentHour + 6);
-        const weatherData = { temp, c, high, low, precip, hrTemp, hrPrecip, hrTime };
-        console.log(weatherData);
 
         let current = `Currently ${temp} degrees and ${c}.`;
         let daily = `Daytime high of ${high} with a nighttime low of ${low}. Chance of rain ${precip}%.`;
@@ -241,15 +242,16 @@ document.addEventListener("DOMContentLoaded", () => {
         weatherDaily.textContent = daily;
 
         const wHr = document.getElementById("weather-hourly");
+        wHr.innerHTML = "";
 
         hrTime.forEach((time, index) => {
             const fTime = formatHour(time);
             const hr = wHr.appendChild(document.createElement("div"));
-            const t = hr.appendChild(document.createElement("span"));
+            const tempSpan = hr.appendChild(document.createElement("span"));
             const temp = hr.appendChild(document.createElement("span"));
             const precip = hr.appendChild(document.createElement("span"));
 
-            t.textContent = fTime;
+            tempSpan.textContent = fTime;
             temp.textContent = hrTemp[index];
             precip.textContent = hrPrecip[index];
         });
@@ -273,19 +275,12 @@ document.addEventListener("DOMContentLoaded", () => {
         };
     };
 
-    const filter = document.getElementById("filter");
-
     function clearCompleted() {
         const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
         const remain = tasks.filter(task => !task.done);
         saveTasks(remain);
         renderTasks();
     }
-
-    let isRunning = false;
-    let timeLeft = 0;
-    let isBreak = false;
-    let timeInterval = null;
 
     function updateDisplay() {
         let m = String(Math.floor(timeLeft / 60)).padStart(2, "0");
@@ -298,9 +293,8 @@ document.addEventListener("DOMContentLoaded", () => {
     function startTimer() {
         const work = document.getElementById("work");
         timeLeft = parseInt(work.value) * 60;
-        const tBtn = document.getElementById("timerBtn");
         isRunning = true;
-        tBtn.textContent = "Pause"
+        timerBtn.textContent = "Pause"
     
         timeInterval = setInterval(startInterval, 1000);
     }
@@ -324,7 +318,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const tBtn = document.getElementById("timerBtn");
         isRunning = false;
         clearInterval(timeInterval);
-        tBtn.textContent = "Start";
+        timerBtn.textContent = "Start";
     }
 
     function resetTimer() {
@@ -334,22 +328,9 @@ document.addEventListener("DOMContentLoaded", () => {
         isBreak = false;
         timeInterval = null;
         updateDisplay();
+        timerBtn.textContent = "Start";
     }
 
-    const timerBtn = document.getElementById("timerBtn");
-    timerBtn.addEventListener("click", () => {
-        if (isRunning === false) {
-            startTimer();
-        } else {
-            pauseTimer();
-        }
-    });
-
-    const resetBtn = document.getElementById("resetBtn");
-    resetBtn.addEventListener("click", resetTimer);
-
-    const notepad = document.getElementById("notes");
-    
     function saveNotes(note) {
         localStorage.setItem("notes", note);
     };
@@ -363,11 +344,19 @@ document.addEventListener("DOMContentLoaded", () => {
     setInterval(clock, 1000);
 
     currentDate();
-
     renderTasks();
+    loadNotes();
 
-    todo_list.addEventListener("click", todo);
+    addBtn.addEventListener("click", todo);
     place.addEventListener("click", fetchWeather);
     filter.addEventListener("click", clearCompleted);
+    timerBtn.addEventListener("click", () => {
+        if (isRunning === false) {
+            startTimer();
+        } else {
+            pauseTimer();
+        }
+    });
+    resetBtn.addEventListener("click", resetTimer);
     notepad.addEventListener("input", () => saveNotes(notepad.value));
 });
