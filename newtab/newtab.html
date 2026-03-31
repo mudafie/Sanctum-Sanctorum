@@ -8,7 +8,7 @@
         <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png">
         <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png">
         <link rel="manifest" href="../assets/site.webmanifest">
-        <script src="./script.js"></script>
+        <script src="./script.js" defer></script>
     </head>
     <body>
         <header>
@@ -21,26 +21,28 @@
                 <div id="date"></div>
             </section>
             <br><hr><br>
-            <section>
-                <div id="task-create">
-                    <input type="text" id="item" placeholder="Enter to-do item.">
-                    <button type="button" id="addBtn">Add to list</button>
-                    <button type="button" id="filter">Filter</button>
-                </div>
-                <div id="list">
-                    <ul id="todo"></ul>
-                </div>
-            </section>
+            <div id="two-col">
+                <section id="tasks-col">
+                    <div id="task-create">
+                        <input type="text" id="item" placeholder="Enter to-do item.">
+                        <button type="button" id="addBtn">Add to list</button>
+                        <button type="button" id="filter">Filter</button>
+                    </div>
+                    <div id="list">
+                        <ul id="todo"></ul>
+                    </div>
+                </section>
+                <section id="cal-col">
+                    <h3>Holidays and Appointments</h3>
+                    <button type="button" id="addEvent">Add Event</button>
+                    <div id="hl"></div>
+                    <div id="el"></div>
+                </section>
+            </div>
             <br><hr><br>
             <section>
                 <div id="timer-card">
-                    <div id="timer">00:00</div>
-                    <label for="work">Focus Time</label>
-                    <input type="number" id="work" name="work" min="0" max="59" value="0">
-                
-                    <label for="break">Break</label>
-                    <input type="number" id="break" name="break" min="0" max="59" value="0">
-
+                    <div id="timer">00:00 <!-- <span id="interval-count">1 / 4</span> --></div>
                     <button id="timerBtn">Start</button>
                     <button id="resetBtn">Reset</button>
                 </div>
@@ -56,6 +58,7 @@
                         <div id="weather-hourly"></div>
                     </div>
                 </div>
+                <br><hr><br>
                 <div id="notable">
                     <textarea id="notes" name="notes" rows="6" cols="75"></textarea>
                 </div>

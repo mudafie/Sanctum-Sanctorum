@@ -1,3 +1,10 @@
 .done {
     text-decoration: line-through;
 }
+
+.two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+}
