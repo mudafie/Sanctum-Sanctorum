@@ -133,17 +133,8 @@ const BREAK_TIME = 5;
 const today = new Date();
 
 // DOM References
-const dropTarget = getElement('drop-target');
-const fileInput = getElement('file-input');
-const sheetSelect = getElement('sheet-select');
-const sheetSelector = getElement('sheet-selector');
-const tbl = getElement('table-container');
-const results = getElement('results');
-const sumBar = getElement('summary-bar');
-const clF = getElement('clear-filter');
-const sumTierBtns = qsa('.summary-tier');
-const viewBtns = qsa('.view-btn');
 const addBtn = getElement('addBtn');
+const item = getElement('item')
 const place = getElement('place');
 const filter = getElement('filter');
 const timerBtn = getElement('timerBtn');
@@ -151,12 +142,6 @@ const resetBtn = getElement('resetBtn');
 const notepad = getElement('notes');
 
 // State variables
-let currentWorkbook = null;
-let currentArray = null;
-let currentView = 'combined';
-let filterState = null;
-let sortColumn = null;
-let sortDirection = 'asc';
 let isRunning = false;
 let timeLeft = 0;
 let isBreak = false;
@@ -485,7 +470,7 @@ function todo() {
     saveTasks(tasks);
     renderTasks();
     
-    getElement('item').value = '';
+    item.value = '';
 };
 
 /* Filters the task list to remove the tasks with a 'done' value of true, 
@@ -707,6 +692,9 @@ loadNotes();
 runMonElim();
 
 addBtn.addEventListener('click', todo);
+document.addEventListener("keydown", (event) => {
+    if (document.activeElement === item && event.key === 'Enter') todo();
+});
 place.addEventListener('click', fetchWeather);
 filter.addEventListener('click', clearCompleted);
 timerBtn.addEventListener('click', () => {
