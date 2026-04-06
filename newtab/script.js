@@ -4,6 +4,8 @@
 ==========================================
 */
 
+import { getElement, qsa, cEl } from "../assets/utils.js"
+
 //#region Module-Level Declarations
 // Constants and configuration
 const currentYear = new Date().getFullYear();
@@ -131,22 +133,22 @@ const BREAK_TIME = 5;
 const today = new Date();
 
 // DOM References
-const dropTarget = document.getElementById('drop-target');
-const fileInput = document.getElementById('file-input');
-const sheetSelect = document.getElementById('sheet-select');
-const sheetSelector = document.getElementById('sheet-selector');
-const tbl = document.getElementById('table-container');
-const results = document.getElementById('results');
-const sumBar = document.getElementById('summary-bar');
-const clF = document.getElementById('clear-filter');
-const sumTierBtns = document.querySelectorAll('.summary-tier');
-const viewBtns = document.querySelectorAll('.view-btn');
-const addBtn = document.getElementById('addBtn');
-const place = document.getElementById('place');
-const filter = document.getElementById('filter');
-const timerBtn = document.getElementById('timerBtn');
-const resetBtn = document.getElementById('resetBtn');
-const notepad = document.getElementById('notes');
+const dropTarget = getElement('drop-target');
+const fileInput = getElement('file-input');
+const sheetSelect = getElement('sheet-select');
+const sheetSelector = getElement('sheet-selector');
+const tbl = getElement('table-container');
+const results = getElement('results');
+const sumBar = getElement('summary-bar');
+const clF = getElement('clear-filter');
+const sumTierBtns = qsa('.summary-tier');
+const viewBtns = qsa('.view-btn');
+const addBtn = getElement('addBtn');
+const place = getElement('place');
+const filter = getElement('filter');
+const timerBtn = getElement('timerBtn');
+const resetBtn = getElement('resetBtn');
+const notepad = getElement('notes');
 
 // State variables
 let currentWorkbook = null;
@@ -375,10 +377,6 @@ function getLaHolidayList(year) {
 =============================
 */
 
-//#region Utility Functions
-
-//#endregion
-
 //#region Function Declarations
 function clock() {
     const date = new Date();
@@ -387,7 +385,7 @@ function clock() {
     const second = String(date.getSeconds()).padStart(2, '0');
 
     const time = `${hour}:${minute}:${second}`;
-    const clockEl = document.getElementById('clock');
+    const clockEl = getElement('clock');
 
     clockEl.textContent = time;
 };
@@ -428,7 +426,7 @@ function currentDate() {
     const m = mNames[month];
 
     const today = `${d} • ${m} ${dd}, ${y}`;
-    const t = document.getElementById('date');
+    const t = getElement('date');
 
     t.textContent = today;
 };
@@ -437,16 +435,16 @@ function currentDate() {
 for each task, and appends them to an unordered list */
 function renderTasks() {       
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-    const list = document.getElementById('todo');
+    const list = getElement('todo');
 
     list.innerHTML = '';
 
     tasks.forEach((/** @type {{ done: boolean; text: string | null; createdAt: string, completedAt: string | null }} */ task, /** @type {string | number} */ index) => {
-        const li = list.appendChild(document.createElement('li'));
-        const box = li.appendChild(document.createElement('input'));
-        const taskLabel = li.appendChild(document.createElement('span'));
+        const li = list.appendChild(cEl('li'));
+        const box = li.appendChild(cEl('input'));
+        const taskLabel = li.appendChild(cEl('span'));
         const created = task.createdAt ? new Date(task.createdAt.replace(/-/g, '/')).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '--';
-        const completed = task.completedAt ? new Date(task.completedAt.replace(/-/g, '/')).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : null;
+        const completed = task.completedAt ? new Date(task.completedAt.replace(/-/g, '/')).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : '--';
         box.type = 'checkbox';
         box.checked = task.done;
         taskLabel.textContent = task.text + ` (${created})`;
@@ -478,7 +476,7 @@ function saveTasks(task) {
 calls saveTasks and renderTasks to commit the list of tasks and then add it to the list, 
 and then resets the value of the input */
 function todo() {
-    const item = getHTMLElement('item');
+    const item = getElement('item');
     let task = { text: item.value, done: false, createdAt: new Date().toISOString().split('T')[0] };
 
     const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
@@ -487,7 +485,7 @@ function todo() {
     saveTasks(tasks);
     renderTasks();
     
-    getHTMLElement('item').value = '';
+    getElement('item').value = '';
 };
 
 /* Filters the task list to remove the tasks with a 'done' value of true, 
@@ -558,21 +556,21 @@ function renderWeather(data) {
     let current = `Currently ${temp} degrees and ${c}.`;
     let daily = `Daytime high of ${high} with a nighttime low of ${low}. Chance of rain ${precip}%.`;
 
-    const weatherCurrent = document.getElementById('weather-current');
-    const weatherDaily = document.getElementById('weather-daily');
+    const weatherCurrent = getElement('weather-current');
+    const weatherDaily = getElement('weather-daily');
 
     weatherCurrent.textContent = current;
     weatherDaily.textContent = daily;
 
-    const wHr = document.getElementById('weather-hourly');
+    const wHr = getElement('weather-hourly');
     wHr.innerHTML = '';
 
     hrTime.forEach((/** @type {number} */ time, /** @type {string | number} */ index) => {
         const fTime = formatHour(time);
-        const hr = wHr.appendChild(document.createElement('div'));
-        const tempSpan = hr.appendChild(document.createElement('span'));
-        const temp = hr.appendChild(document.createElement('span'));
-        const precip = hr.appendChild(document.createElement('span'));
+        const hr = wHr.appendChild(cEl('div'));
+        const tempSpan = hr.appendChild(cEl('span'));
+        const temp = hr.appendChild(cEl('span'));
+        const precip = hr.appendChild(cEl('span'));
 
         tempSpan.textContent = fTime;
         temp.textContent = hrTemp[index];
@@ -585,10 +583,10 @@ function updateDisplay() {
     let m = String(Math.floor(timeLeft / 60)).padStart(2, '0');
     let s = String(timeLeft % 60).padStart(2, '0');
 
-    const timer = document.getElementById('timer');
+    const timer = getElement('timer');
     timer.textContent = m + ':' + s;
 
-    // const intervalEl = getHTMLElement('interval-count');
+    // const intervalEl = getElement('interval-count');
     // if (intervalEl) intervalEl.textContent = `${intervalCount} / 4`;
 };
 
@@ -625,7 +623,7 @@ function startInterval() {
 };
 
 function pauseTimer() {
-    const tBtn = document.getElementById('timerBtn');
+    const tBtn = getElement('timerBtn');
     isRunning = false;
     clearInterval(timeInterval);
     timerBtn.textContent = 'Start';
@@ -654,7 +652,7 @@ function saveNotes(note) {
 // Retrieves 'notes' from localStorage and returns it in the textarea
 function loadNotes() {
     const notes = localStorage.getItem('notes');
-    const notepadEl = getTextAreaElement('notes');
+    const notepadEl = getElement('notes');
     if (notepadEl) {
         notepadEl.value = notes || '';
     }
