@@ -1,3 +1,21 @@
+:root {
+    --win95-bg: #008080;
+    --win95-dark: #808080;
+    --win95-btnface: #b9b9b9;
+    --win95-gray: #c0c0c0;
+    --win95-light: #fff;
+    --win95-navy: #000080;
+    --win95-blue: #1084d0;
+    --win95-text: #000;
+    --win95-spooky: #0000;
+    --win95-titlebar: linear-gradient(to right, var(var(--win95-navy), var(var(--win95-blue))));
+    --win95-outborder: 2px outset var(var(--win95-gray));
+    --win95-inborder: 2px inset var(var(--win95-gray));
+    --win95-inshad: inset 1px 1px var(--win95-dark), inset -1px -1px var(--win95-light);
+    --win95-outshad: outset 1px 1px var(--win95-dark), outset -1px -1px var(--win95-light);
+    --win95-overlay: conic-gradient(var(--win95-text) 90deg, var(--win95-spooky) 0 180deg, var(--win95-text) 0 270deg, var(--win95-spooky) 0);
+}
+
 .done {
     text-decoration: line-through;
 }
