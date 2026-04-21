@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <!-- Main view -->
+    <section id="main-view">
+      <div id="locations-panel">
+        <h3>Locations</h3>
+        <ul id="locations-list"></ul>
+        <div id="add-location">
+          <input type="text" id="new-location" placeholder="New location name">
+          <button id="add-loc-btn">Add</button>
+        </div>
+      </div>
+      <div id="distances-panel">
+        <h3>Distances</h3>
+        <ul id="distances-list"></ul>
+      </div>
+    </section>
+
+    <!-- Distance definition view - hidden initially -->
+    <section id="definition-view" style="display:none">
+      <h3>Define distances for <span id="new-loc-name"></span></h3>
+      <ul id="dist-pairs"></ul>
+      <button type="button" id="calc">Calculate Distances</button>
+      <button type="button" id="confirm">Confirm</button>
+      <button type="button" id="cancel">Cancel</button>
+    </section>
+
+    <script>
+      let locations = [];
+      let distances = [];
+      let pendLoc = '';
+      google.script.run
+        .withSuccessHandler(config => {
+          locations = config.locations;
+          distances = config.distPairs;
+          renderLocations(locations);
+          renderDistances(distances);
+        })
+        .withFailureHandler(e => console.error(e))
+        .getConfig();
+
+      function renderLocations(locations) {
+        const list = document.getElementById('locations-list');
+        list.innerHTML = '';
+        locations.forEach((loc, index) => {
+          const li = document.createElement('li');
+          const btn = document.createElement('button');
+          li.textContent = loc;
+          btn.textContent = '×';
+          btn.addEventListener('click', () => {
+            locations.splice(index, 1);
+            // TODO: google.script.run call to remove location from _Config
+            renderLocations(locations);
+          });
+          li.appendChild(btn);
+          list.appendChild(li);
+        });
+      }
+
+      function renderDistances(distances) {
+        const list = document.getElementById('distances-list');
+        list.innerHTML = '';
+        distances.forEach((pair, index) => {
+          const li = document.createElement('li');
+          const btn = document.createElement('button');
+          li.textContent = `${pair.from} → ${pair.to}: ${pair.miles} mi`;
+          btn.textContent = '×';
+          btn.addEventListener('click', () => {
+            distances.splice(index, 1);
+            // TODO: google.script.run call to remove distance from _Config
+            renderDistances(distances);
+          });
+          li.appendChild(btn);
+          list.appendChild(li);
+        });
+      }
+
+      const addBtn = document.getElementById('add-loc-btn');
+      addBtn.addEventListener('click', () => {
+        pendLoc = document.getElementById('new-location').value;
+        if (!pendLoc) return;
+        const newLocName = document.getElementById('new-loc-name');
+        const main = document.getElementById('main-view');
+        const def = document.getElementById('definition-view');
+        const dList = document.getElementById('dist-pairs');
+        newLocName.textContent = pendLoc;
+        main.style.display = 'none';
+        def.style.display = 'block';
+        dList.innerHTML = '';
+        locations.forEach(loc => {
+          const li = document.createElement('li');
+          li.textContent = loc;
+          dList.appendChild(li);
+        });
+      })
+
+      const cancel = document.getElementById('cancel');
+      cancel.addEventListener('click', () => {
+        const main = document.getElementById('main-view');
+        const def = document.getElementById('definition-view');
+        main.style.display = 'block';
+        def.style.display = 'none';
+        pendLoc = '';
+      })
+
+      const calc = document.getElementById('calc');
+      calc.addEventListener('click', () => {
+        google.script.run
+          .withSuccessHandler(pairs => {
+            const dList = document.getElementById('dist-pairs');
+            dList.innerHTML = '';
+            locations.forEach(loc => {
+              const li = document.createElement('li');
+              const span = document.createElement('span');
+              const n1 = document.createElement('input');
+              const n2 = document.createElement('input');
+              const a = pairs.find(pair => pair.from === pendLoc && pair.to === loc);
+              const b = pairs.find(pair => pair.from === loc && pair.to === pendLoc);
+              n1.type = 'number';
+              n1.dataset.from = a.from;
+              n1.dataset.to = a.to;
+              n1.value = a.miles;
+              n2.type = 'number';
+              n2.dataset.from = b.from;
+              n2.dataset.to = b.to;
+              n2.value = b.miles;
+              span.textContent = `${pendLoc} ↔ ${loc}`;
+              li.appendChild(span);
+              li.appendChild(n1);
+              li.appendChild(n2);
+              dList.appendChild(li);
+            });
+          })
+          .withFailureHandler(e => console.error(e))
+          .calculateDistances(pendLoc, locations);
+      })
+
+      const con = document.getElementById('confirm');
+      con.addEventListener('click', () => {
+        const list = [...document.querySelectorAll('#dist-pairs input')];
+        const save = list.map(input => {
+          return {from: input.dataset.from, to: input.dataset.to, miles: Number(input.value)};
+        });
+        google.script.run
+          .withSuccessHandler(() => {
+            const main = document.getElementById('main-view');
+            const def = document.getElementById('definition-view');
+            main.style.display = 'block';
+            def.style.display = 'none';
+            pendLoc = '';
+            google.script.run
+              .withSuccessHandler(config => {
+                locations = config.locations;
+                distances = config.distPairs;
+                renderLocations(locations);
+                renderDistances(distances);
+              })
+              .withFailureHandler(e => console.error(e))
+              .getConfig();
+          })
+          .withFailureHandler(e => console.error(e))
+          .savePending(pendLoc, save)
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+  </head>
+  <body>
+    <main>
+      <section id='logger'>
+        <div id='inputs'>
+          <label for='date'>Enter Date</label>
+          <input type='date' id='date' name='date'>
+          <select name='locs' id='locs'>
+            <option value=''>>--Please Choose a Location --<</option>
+          </select>
+          <button type="button" id='add'>Add Stop</button>
+        </div>
+        <div id='loc-list'>
+          <ol id='legs'>
+
+          </ol>
+        </div>
+        <div id='preview'>
+          <p></p>
+        </div>
+        <div id='submit-btn'>
+          <button type="button" id='submit'>Submit</button>
+        </div>
+      </section>
+    </main>
+    <script>
+      let matrix = {};
+      let stops = []
+      google.script.run
+        .withSuccessHandler(config => {
+          matrix = config.matrix;
+          const sel = document.querySelector('#locs');
+          config.locations.forEach(l => {
+            const opt = document.createElement('option');
+            opt.textContent = l;
+            opt.value = l;
+            sel.appendChild(opt);
+          })
+        })
+        .withFailureHandler(e => console.error(e))
+        .getConfig();
+
+        function renderStops() {
+          const legs = document.getElementById('legs');
+          legs.innerHTML = '';
+          stops.forEach((stop, index) => {
+            const li = document.createElement('li');
+            const btn = document.createElement('button');
+            li.classList.add('trip-frag');
+            li.textContent = stop;
+            btn.textContent = '×';
+
+            btn.addEventListener('click', () => {
+              stops.splice(index, 1);
+              renderStops();
+            })
+            li.appendChild(btn);
+            legs.appendChild(li);
+          })
+          updatePreview();
+        }
+
+        const add = document.getElementById('add');
+        add.addEventListener('click', () => {
+          const sel = document.querySelector('#locs');
+          if (!sel.value) return;
+          stops.push(sel.value);
+          renderStops();
+        })
+
+        function updatePreview() {
+          const legs = [];
+          for (let i = 0; i < stops.length - 1; i++) {
+            legs.push({ from: stops[i], to: stops[i+1] })
+          };
+          const legsDist = legs.map(leg => {
+            const key = `${leg.from}|${leg.to}`;
+            return { ...leg, miles: matrix[key] };
+          });
+
+          const preview = document.querySelector('#preview');
+          preview.innerHTML = '';
+          legsDist.forEach(leg => {
+            const p = document.createElement('p');
+            p.textContent = `${leg.from} → ${leg.to}: ${leg.miles} mi`;
+            preview.appendChild(p);
+          })
+
+        }
+        const submit = document.getElementById('submit');
+        submit.addEventListener('click', () => {
+          const date = document.getElementById('date').value;
+          if (!date || stops.length < 2) return;
+          google.script.run
+            .withSuccessHandler(() => {
+              google.script.host.close();
+              alert('Trip logged successfully!');
+            })
+            .withFailureHandler(e => console.error(e))
+            .submitTrip(date, stops);
+        });
+    </script>
+  </body>
+</html>
