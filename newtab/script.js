@@ -483,7 +483,24 @@ function clearCompleted() {
 };
 
 // Calendar Widget
+function todayHoliday(holidayList, today) {
+    const match = holidayList.find(h => isSameDay(h.date, today));
+    return match ? match.name : null;
+};
 
+function renderHolidays(list) {
+    const holidayList = (list || getLaHolidayList(currentYear)).concat(getLaHolidayList(currentYear + 1));
+    const todayNorm = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const nextIndex = holidayList.findIndex(h => h.date >= todayNorm);
+    const past = holidayList.slice(0, nextIndex);
+    const lastPast = past.slice(-1);
+    const next = holidayList.slice(nextIndex);
+    todayHoliday(holidayList, todayNorm);
+
+    const cal = getElement('hl');
+    cal.innerHTML = '';
+    const cl = cEl('') // WIP
+};
 
 // Weather Widget
 /* Takes location input from user, fetches OpenMeteo API with the location data
